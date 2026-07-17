@@ -6,8 +6,8 @@
     <title>全渠道订单自助分析看板</title>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -806,6 +806,65 @@
             padding-bottom: 0.7rem;
             border-bottom: 2px solid #f1f5f9;
         }
+
+        .heatmap-wrapper {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .heatmap-wrapper .map-area {
+            flex: 1;
+            min-height: 650px;
+        }
+        .heatmap-wrapper .rankings-panel {
+            width: 240px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .rankings-panel .rank-box {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+        }
+        .rank-box h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1e466e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 6px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            gap: 6px;
+        }
+        .rank-item:nth-child(2) { background:#fff7ed; }
+        .rank-item .rank-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            color:#fff;
+        }
+        .rank-item:nth-child(2) .rank-num { background:#f97316; }
+        .rank-item:nth-child(3) .rank-num { background:#94a3b8; }
+        .rank-item:nth-child(4) .rank-num { background:#d4a056; }
+        .rank-item .rank-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .rank-item .rank-val { font-weight:600; color:#1e293b; white-space:nowrap; }
+        .rank-item .rank-sub { font-size:0.72rem; color:#94a3b8; }
+    
     </style>
 </head>
 <body>
@@ -907,6 +966,22 @@
                     <div class="card-header-left"><i class="fas fa-chart-line"></i> 金额维度交叉分析</div>
                 </div>
                 <div class="amount-grid" id="amountAnalysis"></div>
+            </div>
+            
+            <div class="card" id="heatmapCard" style="margin-bottom:1.8rem;">
+                <div class="card-header">
+                    <div class="card-header-left"><i class="fas fa-fire"></i> 订单热力图</div>
+                    <div class="filter-bar">
+                        <button id="backToNationalBtn" class="reset-btn" style="display:none;padding:6px 14px;font-size:0.8rem;" onclick="backToNationalMap()"><i class="fas fa-arrow-left"></i> 返回全国地图</button>
+                    </div>
+                </div>
+                <div class="heatmap-wrapper">
+                    <div id="heatmapContainer" class="map-area"></div>
+                    <div id="rankingsPanel" class="rankings-panel">
+                        <div class="rank-box" id="rankBox1"><h4 id="rankTitle1">🏆 省份榜</h4><div id="rankList1"></div></div>
+                        <div class="rank-box" id="rankBox2"><h4 id="rankTitle2">🏪 门店榜</h4><div id="rankList2"></div></div>
+                    </div>
+                </div>
             </div>
             <div class="insight-box" id="insightText"></div>
             <div class="footer-note"><i class="far fa-clock"></i> 智能适配 · 支持门店搜索/分页、周同比快捷上周、增强错误提示</div>
@@ -1565,7 +1640,265 @@
             }
 
 
-                        function showProvinceRanking() {
+            
+            // ===== 省份 adcode 映射（地图下钻用） =====
+            const PROVINCE_ADCODE = {
+                "北京市":"110000","天津市":"120000","河北省":"130000","山西省":"140000","内蒙古自治区":"150000",
+                "辽宁省":"210000","吉林省":"220000","黑龙江省":"230000","上海市":"310000","江苏省":"320000",
+                "浙江省":"330000","安徽省":"340000","福建省":"350000","江西省":"360000","山东省":"370000",
+                "河南省":"410000","湖北省":"420000","湖南省":"430000","广东省":"440000","广西壮族自治区":"450000",
+                "海南省":"460000","重庆市":"500000","四川省":"510000","贵州省":"520000","云南省":"530000",
+                "西藏自治区":"540000","陕西省":"610000","甘肃省":"620000","青海省":"630000","宁夏回族自治区":"640000",
+                "新疆维吾尔自治区":"650000","台湾省":"710000","香港特别行政区":"810000","澳门特别行政区":"820000"
+            };
+
+            let heatmapChart = null;
+            let currentMapLevel = "national"; // "national" | "province"
+            let currentMapProvince = "";
+            let allOrdersForHeatmap = [];
+
+            function initHeatmap(orders) {
+                allOrdersForHeatmap = orders;
+                loadChinaMapData().then(() => {
+                    renderNationalMap(orders);
+                    updateRankings(orders, "national");
+                });
+            }
+
+            async function loadChinaMapData() {
+                try {
+                    const resp = await fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json");
+                    const geo = await resp.json();
+                    echarts.registerMap("china", geo);
+                } catch(e) {
+                    console.warn("加载中国地图失败", e);
+                }
+            }
+
+            async function loadProvinceMapData(provinceName) {
+                const adcode = PROVINCE_ADCODE[provinceName];
+                if (!adcode) return false;
+                try {
+                    const resp = await fetch("https://geo.datav.aliyun.com/areas_v3/bound/" + adcode + "_full.json");
+                    const geo = await resp.json();
+                    echarts.registerMap(provinceName, geo);
+                    return true;
+                } catch(e) {
+                    console.warn("加载省份地图失败", provinceName, e);
+                    return false;
+                }
+            }
+
+            function renderNationalMap(orders) {
+                currentMapLevel = "national";
+                currentMapProvince = "";
+                document.getElementById("backToNationalBtn").style.display = "none";
+
+                const provMap = new Map();
+                orders.forEach(o => {
+                    let p = o.province;
+                    if (!p || p === "?" || p === "未知省份") return;
+                    const amt = parseFloat(o.amount) || 0;
+                    if (!provMap.has(p)) provMap.set(p, { amount: 0, count: 0 });
+                    const d = provMap.get(p);
+                    d.amount += amt;
+                    d.count++;
+                });
+
+                const data = Array.from(provMap.entries()).map(([name, v]) => ({
+                    name, value: Math.round(v.amount)
+                }));
+
+                const container = document.getElementById("heatmapContainer");
+                if (!container) return;
+                if (heatmapChart) heatmapChart.dispose();
+
+                heatmapChart = echarts.init(container);
+                heatmapChart.setOption({
+                    title: { text: "全国订单热力图", left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
+                    tooltip: {
+                        trigger: "item",
+                        formatter: function(p) {
+                            if (!p.value) return p.name + "<br/>无数据";
+                            const prov = provMap.get(p.name);
+                            if (!prov) return p.name + "<br/>无数据";
+                            return p.name + "<br/>销售总额: ¥" + prov.amount.toFixed(0) + "<br/>订单量: " + prov.count + " 单";
+                        }
+                    },
+                    visualMap: {
+                        min: 0,
+                        max: Math.max(...data.map(d => d.value), 1),
+                        left: "left",
+                        top: "bottom",
+                        text: ["高", "低"],
+                        calculable: true,
+                        inRange: { color: ["#e0f2fe", "#f97316", "#ea580c"] }
+                    },
+                    series: [{
+                        type: "map",
+                        map: "china",
+                        roam: true,
+                        selectedMode: false,
+                        label: { show: true, fontSize: 7 },
+                        emphasis: { label: { fontSize: 9, fontWeight: "bold" }, itemStyle: { areaColor: "#fdba74" } },
+                        data: data
+                    }]
+                });
+
+                heatmapChart.on("click", function(params) {
+                    if (params.name) drillDownToProvince(params.name, orders);
+                });
+            }
+
+            async function drillDownToProvince(provinceName, orders) {
+                if (!PROVINCE_ADCODE[provinceName]) { alert("暂不支持该省份下钻"); return; }
+                const ok = await loadProvinceMapData(provinceName);
+                if (!ok) { alert("省份地图数据加载失败"); return; }
+
+                currentMapLevel = "province";
+                currentMapProvince = provinceName;
+                document.getElementById("backToNationalBtn").style.display = "inline-flex";
+
+                const cityMap = new Map();
+                const provinceOrders = orders.filter(o => o.province === provinceName);
+                provinceOrders.forEach(o => {
+                    let city = o.city;
+                    if (!city || city === "?" || city === "未知城市") return;
+                    const amt = parseFloat(o.amount) || 0;
+                    if (!cityMap.has(city)) cityMap.set(city, { amount: 0, count: 0 });
+                    const d = cityMap.get(city);
+                    d.amount += amt;
+                    d.count++;
+                });
+
+                const data = Array.from(cityMap.entries()).map(([name, v]) => ({
+                    name, value: Math.round(v.amount)
+                }));
+
+                const container = document.getElementById("heatmapContainer");
+                if (heatmapChart) heatmapChart.dispose();
+                heatmapChart = echarts.init(container);
+                heatmapChart.setOption({
+                    title: { text: provinceName + " - 订单热力图", left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
+                    tooltip: {
+                        trigger: "item",
+                        formatter: function(p) {
+                            if (!p.value) return p.name + "<br/>无数据";
+                            const cd = cityMap.get(p.name);
+                            if (!cd) return p.name + "<br/>无数据";
+                            return p.name + "<br/>销售总额: ¥" + cd.amount.toFixed(0) + "<br/>订单量: " + cd.count + " 单";
+                        }
+                    },
+                    visualMap: {
+                        min: 0,
+                        max: Math.max(...data.map(d => d.value), 1),
+                        left: "left",
+                        top: "bottom",
+                        text: ["高", "低"],
+                        calculable: true,
+                        inRange: { color: ["#e0f2fe", "#f97316", "#ea580c"] }
+                    },
+                    series: [{
+                        type: "map",
+                        map: provinceName,
+                        roam: true,
+                        selectedMode: false,
+                        label: { show: true, fontSize: 7 },
+                        emphasis: { label: { fontSize: 9, fontWeight: "bold" }, itemStyle: { areaColor: "#fdba74" } },
+                        data: data
+                    }]
+                });
+
+                updateRankings(orders, "province", provinceName, provinceOrders);
+            }
+
+            function backToNationalMap() {
+                renderNationalMap(allOrdersForHeatmap);
+                updateRankings(allOrdersForHeatmap, "national");
+            }
+            window.backToNationalMap = backToNationalMap;
+
+            function updateRankings(orders, level, provinceName, provinceOrders) {
+                const r1 = document.getElementById("rankList1");
+                const r2 = document.getElementById("rankList2");
+                const t1 = document.getElementById("rankTitle1");
+                const t2 = document.getElementById("rankTitle2");
+                if (!r1 || !r2) return;
+
+                if (level === "national") {
+                    t1.innerHTML = "🏆 省份榜";
+                    t2.innerHTML = "🏪 门店榜（全国）";
+
+                    // Province top 5
+                    const provMap = new Map();
+                    orders.forEach(o => {
+                        let p = o.province;
+                        if (!p || p === "?" || p === "未知省份") return;
+                        const amt = parseFloat(o.amount) || 0;
+                        if (!provMap.has(p)) provMap.set(p, { amount: 0, count: 0 });
+                        const d = provMap.get(p);
+                        d.amount += amt; d.count++;
+                    });
+                    const provRank = Array.from(provMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
+                        .sort((a,b) => b.amt - a.amt).slice(0,5);
+                    r1.innerHTML = provRank.map((item,i) =>
+                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                    ).join("");
+
+                    // Store top 5 national
+                    const storeMap = new Map();
+                    orders.forEach(o => {
+                        const code = o.storeCode;
+                        if (!code) return;
+                        const amt = parseFloat(o.amount) || 0;
+                        if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", province: o.province || "", amount: 0 });
+                        storeMap.get(code).amount += amt;
+                    });
+                    const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, prov:d.province, amt:d.amount}))
+                        .sort((a,b) => b.amt - a.amt).slice(0,5);
+                    r2.innerHTML = storeRank.map((item,i) =>
+                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                    ).join("");
+
+                } else {
+                    const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                    t1.innerHTML = "🏆 城市榜（"+provinceName+"）";
+                    t2.innerHTML = "🏪 门店榜（"+provinceName+"）";
+
+                    // City top 5
+                    const cityMap = new Map();
+                    po.forEach(o => {
+                        let c = o.city;
+                        if (!c || c === "?" || c === "未知城市") return;
+                        const amt = parseFloat(o.amount) || 0;
+                        if (!cityMap.has(c)) cityMap.set(c, { amount: 0, count: 0 });
+                        const d = cityMap.get(c);
+                        d.amount += amt; d.count++;
+                    });
+                    const cityRank = Array.from(cityMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
+                        .sort((a,b) => b.amt - a.amt).slice(0,5);
+                    r1.innerHTML = cityRank.map((item,i) =>
+                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                    ).join("");
+
+                    // Store top 5 in province
+                    const storeMap = new Map();
+                    po.forEach(o => {
+                        const code = o.storeCode;
+                        if (!code) return;
+                        const amt = parseFloat(o.amount) || 0;
+                        if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", amount: 0 });
+                        storeMap.get(code).amount += amt;
+                    });
+                    const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, amt:d.amount}))
+                        .sort((a,b) => b.amt - a.amt).slice(0,5);
+                    r2.innerHTML = storeRank.map((item,i) =>
+                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-sub">${item.city}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                    ).join("");
+                }
+            }
+
+            function showProvinceRanking() {
                 const filtered = filterOrdersByProvince(currentSelectedProvince);
                 if (!filtered.length) { alert("当前筛选范围内无数据"); return; }
                 const provCount = new Map();
@@ -2132,6 +2465,7 @@
                 document.getElementById("dashboardContent").classList.remove("hidden");
                 renderDynamicModules(initialFiltered);
                 renderChannelModules(initialFiltered, "全国");
+                initHeatmap(allOrders);
 
                 // ----- 数据加载分析完成后，平滑淡出上传区提示文字及图标 -----
                 if (!hasFadedOut && allOrders.length > 0) {
