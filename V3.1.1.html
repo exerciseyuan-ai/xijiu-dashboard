@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
         }
         body {
             background: #f4f7fc;
-            padding: 2rem 1.5rem;
+            padding: 96px 1.5rem 2rem;
             color: #1e2a3e;
         }
         .dashboard {
@@ -27,56 +27,181 @@
         }
         .upload-area {
             background: white;
-            border-radius: 32px;
-            padding: 2rem 1.5rem;
+            border-radius: 14px;
+            padding: 1.5rem 1.2rem;
             text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eef2f8;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            border: 1px solid #e2e8f0;
             transition: padding 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .upload-area i {
-            font-size: 48px;
-            color: #f97316;
+            font-size: 42px;
+            color: #2563eb;
             margin-bottom: 12px;
         }
         .upload-btn,
         .reset-btn,
         .export-btn,
         .template-btn,
-        .export-clean-btn {
-            background: linear-gradient(135deg, #f97316, #ea580c);
+        .export-clean-btn,
+        .three-in-one-btn,
+        .ghost-btn {
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.85rem;
             cursor: pointer;
-            margin: 8px 6px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: 0.2s;
+            gap: 6px;
+            transition: all 0.2s ease;
+            height: 36px;
+            white-space: nowrap;
         }
-        .reset-btn {
-            background: linear-gradient(135deg, #64748b, #475569);
+        .upload-btn:hover,
+        .reset-btn:hover,
+        .export-btn:hover,
+        .template-btn:hover,
+        .export-clean-btn:hover,
+        .three-in-one-btn:hover,
+        .ghost-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .export-btn {
-            background: linear-gradient(135deg, #0f766e, #0d9488);
+        .upload-btn { background: #4f7df3; }
+        .upload-btn:hover { background: #3b6ae0; }
+        .reset-btn { background: #6b7a8e; }
+        .reset-btn:hover { background: #556376; }
+        .export-btn { background: #2b9c6c; }
+        .export-btn:hover { background: #228a5e; }
+        .export-clean-btn { background: #33415c; }
+        .export-clean-btn:hover { background: #1e2a3e; }
+        .template-btn { background: #4f7df3; }
+        .template-btn:hover { background: #3b6ae0; }
+        .three-in-one-btn { background: #e8852b; }
+        .three-in-one-btn:hover { background: #d47520; }
+        .ghost-btn {
+            background: #ffffff;
+            color: #334155;
+            border: 1px solid #d8e0ea;
         }
-        .export-clean-btn {
-            background: linear-gradient(135deg, #2c3e66, #1e3a5f);
-        }
-        .template-btn {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        .ghost-btn:hover {
+            background: #f8fafc;
+            color: #0f172a;
+            transform: none;
+            box-shadow: none;
         }
         .action-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #ffffff;
+            border-bottom: 1px solid #e6edf4;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 0 32px;
+            height: 64px;
+            min-height: 64px;
+            flex-shrink: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .action-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .action-group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .action-group-secondary {
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        .action-bar .upload-btn,
+        .action-bar .reset-btn,
+        .action-bar .export-btn,
+        .action-bar .template-btn,
+        .action-bar .export-clean-btn,
+        .action-bar .three-in-one-btn,
+        .action-bar .ghost-btn {
+            background: transparent;
+            border: none;
+            color: #5a6a7e;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px 18px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .action-bar .upload-btn i,
+        .action-bar .reset-btn i,
+        .action-bar .export-btn i,
+        .action-bar .template-btn i,
+        .action-bar .export-clean-btn i,
+        .action-bar .three-in-one-btn i,
+        .action-bar .ghost-btn i {
+            margin-right: 6px;
+            font-size: 15px;
+            color: #8a9bb0;
+        }
+        .action-bar .upload-btn:hover,
+        .action-bar .reset-btn:hover,
+        .action-bar .export-btn:hover,
+        .action-bar .template-btn:hover,
+        .action-bar .export-clean-btn:hover,
+        .action-bar .three-in-one-btn:hover,
+        .action-bar .ghost-btn:hover {
+            background: #f0f5ff;
+            color: #1e293b;
+            transform: none;
+            box-shadow: none;
+        }
+        .action-bar .upload-btn:hover i,
+        .action-bar .reset-btn:hover i,
+        .action-bar .export-btn:hover i,
+        .action-bar .template-btn:hover i,
+        .action-bar .export-clean-btn:hover i,
+        .action-bar .three-in-one-btn:hover i,
+        .action-bar .ghost-btn:hover i {
+            color: #4f7df3;
+        }
+        .action-bar .upload-btn:active,
+        .action-bar .reset-btn:active,
+        .action-bar .export-btn:active,
+        .action-bar .template-btn:active,
+        .action-bar .export-clean-btn:active,
+        .action-bar .three-in-one-btn:active,
+        .action-bar .ghost-btn:active {
+            background: #eef4ff;
+            color: #1a2a4a;
+            font-weight: 600;
+        }
+        .action-bar .upload-btn:active i,
+        .action-bar .reset-btn:active i,
+        .action-bar .export-btn:active i,
+        .action-bar .template-btn:active i,
+        .action-bar .export-clean-btn:active i,
+        .action-bar .three-in-one-btn:active i,
+        .action-bar .ghost-btn:active i {
+            color: #4f7df3;
         }
         .file-info {
             margin-top: 12px;
@@ -89,29 +214,29 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
         }
         .kpi-card {
             background: white;
-            border-radius: 28px;
-            padding: 1.2rem;
+            border-radius: 12px;
+            padding: 1rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f3f8;
+            gap: 0.9rem;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            border: 1px solid #e2e8f0;
         }
         .kpi-icon {
             width: 54px;
             height: 54px;
-            background: #fff3eb;
-            border-radius: 20px;
+            background: #f1f5f9;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #f97316;
-            font-size: 28px;
+            color: #2563eb;
+            font-size: 26px;
             flex-shrink: 0;
         }
         .kpi-content h3 {
@@ -130,15 +255,15 @@
         .row-2col {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 1.8rem;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
         }
         .card {
             background: white;
-            border-radius: 28px;
-            padding: 1.4rem 1.2rem 1.6rem;
-            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.08);
-            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 1.05rem 1rem 1.2rem;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+            border: 1px solid #e2e8f0;
             break-inside: avoid;
             overflow: hidden;
         }
@@ -146,12 +271,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             font-weight: 700;
-            font-size: 1.2rem;
-            color: #1e466e;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 0.7rem;
+            font-size: 1.05rem;
+            color: #0f172a;
+            border-bottom: 1px solid #eef2f6;
+            padding-bottom: 0.6rem;
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -162,17 +287,17 @@
             flex-shrink: 0;
         }
         .card-header-left i {
-            color: #f97316;
-            background: #fff4ed;
+            color: #475569;
+            background: #f1f5f9;
             padding: 8px;
-            border-radius: 14px;
+            border-radius: 8px;
         }
         .province-selector,
         .city-selector {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            padding: 6px 16px;
+            border-radius: 8px;
+            padding: 6px 12px;
             font-size: 0.8rem;
             font-weight: 500;
             color: #1e293b;
@@ -183,21 +308,21 @@
         }
         .province-selector:hover,
         .city-selector:hover {
-            border-color: #f97316;
-            background: #fff7ed;
+            border-color: #2563eb;
+            background: #f8fafc;
         }
         .province-search-input {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 40px;
+            border-radius: 8px;
             padding: 6px 12px;
             font-size: 0.8rem;
             width: 140px;
             outline: none;
         }
         .province-search-input:focus {
-            border-color: #f97316;
-            background: #fff7ed;
+            border-color: #2563eb;
+            background: #ffffff;
         }
         .filter-bar {
             display: flex;
@@ -257,25 +382,25 @@
             margin-top: 0.5rem;
         }
         .amount-card {
-            background: #f9fdfb;
-            border-radius: 20px;
-            padding: 1rem;
-            border: 1px solid #e2f0ea;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 0.9rem;
+            border: 1px solid #e2e8f0;
         }
         .insight-box {
-            background: #f3faf7;
-            border-radius: 24px;
-            padding: 1.2rem 1.8rem;
-            margin-top: 1.8rem;
-            border-left: 6px solid #f97316;
-            font-size: 0.95rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin-top: 1.25rem;
+            border-left: 4px solid #0d9488;
+            font-size: 0.92rem;
             line-height: 1.6;
-            color: #1a4f62;
+            color: #334155;
         }
         .footer-note {
             text-align: right;
-            font-size: 0.75rem;
-            color: #7c9aa8;
+            font-size: 0.78rem;
+            color: #64748b;
             margin-top: 2rem;
             border-top: 1px dashed #cbdcdb;
             padding-top: 1rem;
@@ -288,7 +413,7 @@
                 grid-template-columns: 1fr;
             }
             body {
-                padding: 1rem;
+                padding: 80px 1rem 1rem;
             }
         }
         .hidden {
@@ -462,76 +587,70 @@
             padding-top: 12px;
             border-top: 1px dashed #cbd5e1;
         }
-        .wow-stats {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .wow-stat-item {
-            flex: 1;
-            min-width: 120px;
-        }
-        .wow-label {
-            font-size: 0.85rem;
-            color: #5b6e8c;
-        }
-        .wow-value {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1e2a3e;
-        }
-        .wow-change {
-            font-size: 0.85rem;
-        }
-        .wow-previous {
-            font-size: 0.7rem;
-            color: #7c8ba0;
-        }
-        .date-range-note {
-            margin-top: 12px;
-            font-size: 0.7rem;
-            color: #7c9aa8;
-            text-align: center;
-        }
-        .wow-date-picker {
+        .filter-picker {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 12px;
             background: #f8fafc;
-            padding: 8px 16px;
-            border-radius: 40px;
-            margin-bottom: 16px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
         }
-        .wow-date-picker label {
+        .filter-picker label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-size: 0.8rem;
             font-weight: 500;
             color: #334155;
         }
-        .wow-date-picker input {
+        .filter-picker input,
+        .filter-picker select {
             border: 1px solid #cbd5e1;
-            border-radius: 30px;
-            padding: 6px 12px;
+            border-radius: 8px;
+            padding: 6px 10px;
             font-size: 0.8rem;
             background: white;
+            color: #1e293b;
+            outline: none;
         }
-        .wow-date-picker button {
+        .filter-picker input:focus,
+        .filter-picker select:focus {
+            border-color: #2563eb;
+        }
+        .filter-picker button {
             background: #f97316;
             border: none;
             color: white;
-            padding: 6px 16px;
-            border-radius: 30px;
+            padding: 6px 14px;
+            border-radius: 8px;
             font-size: 0.75rem;
             cursor: pointer;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-        .wow-date-picker button.reset-wow {
+        .filter-picker button:hover {
+            background: #d47520;
+        }
+        .filter-picker button.quick-btn {
+            background: #3b82f6;
+        }
+        .filter-picker button.quick-btn:hover {
+            background: #1d4ed8;
+        }
+        .filter-picker button.filter-reset {
             background: #64748b;
         }
-        .wow-date-picker button.quick-btn {
-            background: #3b82f6;
+        .filter-picker button.filter-reset:hover {
+            background: #556376;
+        }
+        .filter-summary-note {
+            margin-top: 10px;
+            font-size: 0.78rem;
+            color: #64748b;
         }
         .store-search-box {
             display: flex;
@@ -622,22 +741,100 @@
             border: 0 !important;
             pointer-events: none !important;
         }
+        .upload-area.upload-area-collapsed {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            border-width: 0;
+            background: transparent;
+            box-shadow: none;
+            margin-bottom: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        /* 移动端优化 */
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
             .action-bar {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                height: 56px;
+                min-height: 56px;
+                padding: 0 16px;
                 gap: 12px;
+                overflow-x: auto;
+            }
+            .action-group {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                flex-shrink: 0;
+            }
+            .action-group-secondary {
+                justify-content: flex-start;
             }
             .action-bar .upload-btn,
             .action-bar .reset-btn,
             .action-bar .export-btn,
             .action-bar .template-btn,
-            .action-bar .export-clean-btn {
+            .action-bar .export-clean-btn,
+            .action-bar .three-in-one-btn,
+            .action-bar .ghost-btn {
+                font-size: 13.5px;
+                padding: 6px 12px;
+            }
+            .action-bar .upload-btn i,
+            .action-bar .reset-btn i,
+            .action-bar .export-btn i,
+            .action-bar .template-btn i,
+            .action-bar .export-clean-btn i,
+            .action-bar .three-in-one-btn i,
+            .action-bar .ghost-btn i {
+                font-size: 13.5px;
+            }
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .action-bar {
+                flex-direction: row;
+                height: 52px;
+                min-height: 52px;
+                padding: 0 12px;
+                gap: 10px;
+                overflow-x: auto;
+            }
+            .action-group {
+                width: auto;
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 4px;
+                flex-shrink: 0;
+            }
+            .action-group + .action-group::before {
+                display: none;
+            }
+            .action-bar .upload-btn,
+            .action-bar .reset-btn,
+            .action-bar .export-btn,
+            .action-bar .template-btn,
+            .action-bar .export-clean-btn,
+            .action-bar .three-in-one-btn,
+            .action-bar .ghost-btn {
                 margin: 0;
-                width: 100%;
+                width: auto;
                 justify-content: center;
+                font-size: 13px;
+                padding: 5px 10px;
+            }
+            .action-bar .upload-btn i,
+            .action-bar .reset-btn i,
+            .action-bar .export-btn i,
+            .action-bar .template-btn i,
+            .action-bar .export-clean-btn i,
+            .action-bar .three-in-one-btn i,
+            .action-bar .ghost-btn i {
+                margin-right: 4px;
+                font-size: 13px;
             }
 
             .kpi-grid {
@@ -690,19 +887,18 @@
                 width: 90px;
                 font-size: 0.7rem;
             }
-            .wow-date-picker {
+            .filter-picker {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .wow-date-picker input,
-            .wow-date-picker button {
+            .filter-picker label {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-picker input,
+            .filter-picker select,
+            .filter-picker button {
                 width: 100%;
-            }
-            .wow-stats {
-                gap: 0.5rem;
-            }
-            .wow-stat-item .wow-value {
-                font-size: 1.2rem;
             }
             .pie-chart-box {
                 max-width: 150px;
@@ -778,8 +974,8 @@
         }
         .modal-dialog {
             background: #fff;
-            border-radius: 28px;
-            padding: 1.8rem;
+            border-radius: 14px;
+            padding: 1.4rem;
             max-width: 560px;
             width: 90%;
             max-height: 80vh;
@@ -799,12 +995,12 @@
         }
         .modal-close:hover { color: #475569; }
         .modal-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #1e466e;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.7rem;
-            border-bottom: 2px solid #f1f5f9;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid #eef2f6;
         }
 
         .heatmap-wrapper {
@@ -813,25 +1009,25 @@
             margin-top: 8px;
         }
         .heatmap-wrapper .map-area {
-            flex: 1;
+            flex: 0 0 60%;
             min-height: 650px;
         }
         .heatmap-wrapper .rankings-panel {
-            width: 240px;
-            flex-shrink: 0;
+            flex: 1 1 40%;
+            min-width: 240px;
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
         .rankings-panel .rank-box {
             background: #f8fafc;
-            border-radius: 16px;
+            border-radius: 10px;
             padding: 12px;
         }
         .rank-box h4 {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #1e466e;
+            color: #0f172a;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -864,36 +1060,358 @@
         .rank-item .rank-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .rank-item .rank-val { font-weight:600; color:#1e293b; white-space:nowrap; }
         .rank-item .rank-sub { font-size:0.72rem; color:#94a3b8; }
+        .rank-select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0f172a;
+            background: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        .rank-select:focus { border-color: #2563eb; }
+
     
+        .zoom-control {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-right: 8px;
+        }
+        .zoom-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #64748b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .zoom-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .zoom-input {
+            width: 52px;
+            padding: 4px 4px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #475569;
+            text-align: center;
+            font-weight: 600;
+            background: #fff;
+            outline: none;
+        }
+        .zoom-input:focus { border-color: #2563eb; }
+        .pagination-bar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 6px 2px;
+            justify-content: center;
+        }
+        .page-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #475569;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .page-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+        #storePagination .page-btn {
+            width: auto;
+            height: auto;
+            padding: 5px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        #storePagination .page-btn:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
+        #storePagination .page-btn.active {
+            background: #f97316;
+            color: #fff;
+            border-color: #f97316;
+        }
+        #storePagination .store-pagination-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        #storePagination .store-pagination-buttons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        #storePagination .store-page-size {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: #475569;
+        }
+        #storePagination .store-page-size select {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 4px 6px;
+            font-size: 0.78rem;
+            background: #fff;
+            color: #1e293b;
+            outline: none;
+            cursor: pointer;
+        }
+        #storePagination .page-btn.page-prev,
+        #storePagination .page-btn.page-next {
+            width: 64px;
+            min-width: 64px;
+        }
+        #storePagination .page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            background: #f8fafc;
+        }
+        #storePagination .page-ellipsis {
+            color: #94a3b8;
+            font-size: 0.78rem;
+            padding: 0 2px;
+        }
+        #storePagination .store-page-total {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        .page-input {
+            width: 28px;
+            padding: 2px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            color: #1e293b;
+            text-align: center;
+            outline: none;
+        }
+        .page-input:focus { border-color: #2563eb; }
+        .product-filter-btns {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .product-filter-btns .filter-btn {
+            padding: 2px 8px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s;
+            line-height: 1.4;
+        }
+        .product-filter-btns .filter-btn:hover { background: #f1f5f9; }
+        .product-filter-btns .filter-btn.active { background: #1e466e; color: #fff; border-color: #1e466e; }
+
+        .page-total {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        .city-chart {
+            margin-top: 14px;
+            border-top: 1px solid #e2e8f0;
+            padding: 10px 6px 2px;
+        }
+        .city-chart-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #1e466e;
+            margin-bottom: 8px;
+        }
+        .city-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+            font-size: 0.72rem;
+        }
+        .city-bar-name {
+            width: 54px;
+            flex-shrink: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #475569;
+            text-align: right;
+        }
+        .city-bar-track {
+            flex: 1;
+            height: 14px;
+            background: #f1f5f9;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+        .city-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #93c5fd, #2563eb);
+            border-radius: 7px;
+            transition: width 0.3s;
+        }
+        .city-bar-val {
+            width: 44px;
+            flex-shrink: 0;
+            text-align: right;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .region-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .region-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            background: #fff;
+            transition: background 0.15s;
+        }
+        .region-item:hover { background: #f1f5f9; }
+        .region-item .region-item-rank {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.68rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .region-item:nth-child(2) .region-item-rank { background: #f97316; }
+        .region-item:nth-child(3) .region-item-rank { background: #94a3b8; }
+        .region-item:nth-child(4) .region-item-rank { background: #d4a056; }
+        .region-item .region-item-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #1e293b;
+        }
+        .region-item .region-item-val {
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+            font-size: 0.7rem;
+        }
+        @media (max-width: 900px) {
+            .heatmap-wrapper {
+                flex-direction: column;
+            }
+            .heatmap-wrapper .map-area {
+                flex: 1 1 auto;
+                min-height: 420px;
+                width: 100%;
+            }
+            .heatmap-wrapper .rankings-panel {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: 100%;
+            }
+        }
+        .product-tool-overlay {
+            position: fixed; inset: 0; z-index: 9999; display: none;
+            align-items: center; justify-content: center; padding: 20px;
+            background: rgba(15, 23, 42, 0.55);
+        }
+        .product-tool-overlay.show { display: flex; }
+        .product-tool-modal {
+            display: flex; flex-direction: column; width: min(1120px, 100%);
+            height: min(88vh, 920px); background: #fff; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 20px 60px rgba(2, 6, 23, 0.35);
+        }
+        .product-tool-modal-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: #f8fafc;
+            border-bottom: 1px solid #d7dee8; flex: 0 0 auto;
+        }
+        .product-tool-modal-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+        .product-tool-close {
+            width: 36px; height: 36px; border: 0; border-radius: 8px;
+            background: #e2e8f0; color: #334155; font-size: 15px; cursor: pointer;
+        }
+        .product-tool-close:hover { background: #cbd5e1; }
+        .product-tool-modal iframe { flex: 1 1 auto; min-height: 0; width: 100%; border: 0; }
+        @media (max-width: 760px) {
+            .product-tool-overlay { padding: 0; }
+            .product-tool-modal { width: 100vw; height: 100dvh; height: 100vh; border-radius: 0; }
+        }
     </style>
 </head>
 <body>
+    <div class="action-bar">
+                <div class="action-group action-group-primary">
+                    <button class="upload-btn" onclick="document.getElementById('excelInput').click()"><i class="fas fa-chart-line"></i> 选择文件分析</button>
+                    <button class="three-in-one-btn" id="threeInOneBtn"><i class="fas fa-upload"></i> 三合一导入</button>
+                    <button class="upload-btn" id="productToolBtn"><i class="fas fa-box-open"></i> 商品上架工具</button>
+                </div>
+                <div class="action-group action-group-secondary">
+                    <button class="ghost-btn" id="downloadTemplateBtn"><i class="fas fa-download"></i> 下载示例模板</button>
+                    <button class="ghost-btn" onclick="document.getElementById('storeFileInput').click()"><i class="fas fa-store"></i> 选择门店数据</button>
+                    <button class="ghost-btn" onclick="document.getElementById('productFileInput').click()"><i class="fas fa-box"></i> 商品订单数据</button>
+                    <button class="ghost-btn" id="resetDataBtn"><i class="fas fa-trash-alt"></i> 重置数据</button>
+                    <button class="ghost-btn" id="exportReportBtn"><i class="fas fa-file-pdf"></i> 导出报告(PDF)</button>
+                    <button class="ghost-btn" id="exportCleanDataBtn"><i class="fas fa-database"></i> 导出清洗模板</button>
+                </div>
+            </div>
     <div class="dashboard">
         <div id="error-console"></div>
         <div class="upload-area" id="uploadArea">
             <i class="fas fa-cloud-upload-alt"></i>
-            <h3>📂 上传订单Excel（全渠道，自动适配模板）</h3>
+            <h3>上传订单Excel（全渠道，自动适配模板）</h3>
             <p style="margin: 8px 0; color: #5a6e7c;">支持 .xlsx/.xls，自动识别渠道/状态/金额/地址/时间/配送距离，分析城市、时段、配送</p>
-            <div class="action-bar">
-                <button class="template-btn" id="downloadTemplateBtn"><i class="fas fa-download"></i> 下载示例模板</button>
-                <button class="upload-btn" onclick="document.getElementById('excelInput').click()"><i class="fas fa-chart-line"></i> 选择文件分析</button>
-                <button class="template-btn" onclick="document.getElementById('storeFileInput').click()"><i class="fas fa-store"></i> 选择门店数据</button>
-                <button class="upload-btn" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);" onclick="document.getElementById('productFileInput').click()"><i class="fas fa-box"></i> 商品订单数据</button>
-                <button class="reset-btn" id="resetDataBtn"><i class="fas fa-trash-alt"></i> 重置数据</button>
-                <button class="export-btn" id="exportReportBtn"><i class="fas fa-file-pdf"></i> 导出报告(PDF)</button>
-                <button class="export-clean-btn" id="exportCleanDataBtn"><i class="fas fa-database"></i> 导出清洗模板</button>
-            </div>
             <input type="file" id="excelInput" accept=".xlsx, .xls" style="display: none;">
             <div class="file-info" id="fileInfo"></div>
             <input type="file" id="storeFileInput" accept=".xlsx,.xls" style="display: none;">
 <input type="file" id="productFileInput" accept=".xlsx,.xls" style="display: none;">
 <div class="file-info" id="productFileInfo"></div>
             <div class="file-info" id="storeFileInfo"></div>
+            <input type="file" id="threeInOneInput" accept=".xlsx,.xls" style="display: none;">
+            <div class="file-info" id="threeInOneInfo"></div>
         </div>
 
         <div id="dashboardContent" class="hidden">
             <div class="kpi-grid" id="kpiArea"></div>
-            <div id="weekOverWeekContainer"></div>
+            <div id="globalFilterContainer"></div>
             <div class="row-2col">
                 <div class="card">
                     <div class="card-header">
@@ -921,7 +1439,7 @@
                             <select id="cityTopNSelect" class="city-selector" style="min-width:80px;"><option value="10" selected>TOP 10</option><option value="20">TOP 20</option><option value="30">TOP 30</option><option value="-10">倒数TOP10</option><option value="-20">倒数TOP20</option><option value="-30">倒数TOP30</option></select>
                             <select id="provinceSelect" class="province-selector"></select>
                             <button class="upload-btn" style="min-width:auto;padding:6px 14px;font-size:0.8rem;background:linear-gradient(135deg,#2563eb,#1d4ed8);" onclick="showProvinceRanking()"><i class="fas fa-list-ol"></i> 省份排行</button>
-                            <input type="text" id="provinceSearchInput" class="province-search-input" placeholder="🔍 搜索省份">
+                            <input type="text" id="provinceSearchInput" class="province-search-input" placeholder="搜索省份">
                         </div>
                     </div>
                     <div id="allCityContainer" class="city-list">加载中...</div>
@@ -954,7 +1472,7 @@
                     <div class="filter-bar">
                         <select id="storeCitySelect" class="city-selector"></select>
                         <div class="store-search-box">
-                            <input type="text" id="storeSearchInput" class="store-search-input" placeholder="🔍 搜索门店编码/名称">
+                            <input type="text" id="storeSearchInput" class="store-search-input" placeholder="搜索门店编码/名称">
                         </div>
                     </div>
                 </div>
@@ -978,20 +1496,45 @@
                 <div class="card-header">
                     <div class="card-header-left"><i class="fas fa-fire"></i> 订单热力图</div>
                     <div class="filter-bar">
+                        <div class="zoom-control">
+                            <button class="zoom-btn" onclick="mapZoomOut()" title="缩小"><i class="fas fa-minus"></i></button>
+                            <input type="text" class="zoom-input" id="zoomLevelDisplay" value="165%" onchange="setMapZoom(this.value)" title="输入缩放比率（0-1000%）">
+                            <button class="zoom-btn" onclick="mapZoomIn()" title="放大"><i class="fas fa-plus"></i></button>
+                        </div>
                         <button id="backToNationalBtn" class="reset-btn" style="display:none;padding:6px 14px;font-size:0.8rem;" onclick="backToNationalMap()"><i class="fas fa-arrow-left"></i> 返回全国地图</button>
                     </div>
                 </div>
                 <div class="heatmap-wrapper">
                     <div id="heatmapContainer" class="map-area"></div>
                     <div id="rankingsPanel" class="rankings-panel">
-                        <div class="rank-box" id="rankBox1"><h4 id="rankTitle1">🏆 省份榜</h4><div id="rankList1"></div></div>
-                        <div class="rank-box" id="rankBox2"><h4 id="rankTitle2">🏪 门店榜</h4><div id="rankList2"></div></div>
-                        <div class="rank-box" id="rankBox3"><h4 id="rankTitle3">📦 商品榜</h4><div id="rankList3"></div></div>
+                        <div style="margin-bottom:10px;">
+                            <select id="rankSelect" class="rank-select" onchange="switchRankingTab(this.value)">
+                                <option value="province">省份榜</option>
+                                <option value="store">门店榜</option>
+                                <option value="product" selected>商品榜</option>
+                                <option value="spec">规格榜</option>
+                                <option value="region">片区榜</option>
+                            </select>
+                        </div>
+                        <div class="rank-box" id="rankBoxSingle">
+                            <h4 id="rankTitleSingle">商品榜</h4>
+                            <div id="rankListSingle"></div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="insight-box" id="insightText"></div>
-            <div class="footer-note"><i class="far fa-clock"></i> 智能适配 · 支持门店搜索/分页、周同比快捷上周、增强错误提示</div>
+            <div class="footer-note"><i class="far fa-clock"></i> 数据仅在本机浏览器处理，不上传服务器 · 支持 .xlsx / .xls</div>
+        </div>
+    </div>
+
+    <div id="productToolOverlay" class="product-tool-overlay">
+        <div class="product-tool-modal">
+            <div class="product-tool-modal-head">
+                <span class="product-tool-modal-title">商品上架工具</span>
+                <button class="product-tool-close" id="productToolClose" title="关闭">×</button>
+            </div>
+            <iframe id="productToolFrame" src="商品上架生成工具.html" title="商品上架工具"></iframe>
         </div>
     </div>
 
@@ -1013,6 +1556,7 @@
             let allOrders = [];
             let currentSelectedProvince = "全国";
             let currentSelectedStoreCity = "全国";
+            let globalFilter = { startDate: "", endDate: "", channel: "全部", status: "全部" };
             let allProvinceList = [];
             let importedStoreMap = null;
             let importedProducts = [];
@@ -1021,7 +1565,7 @@
             let currentStorePage = 1;
             let currentStoreSearch = "";
             let currentStoreList = [];
-            const storePageSize = 10;
+            let currentStorePageSize = 10;
             const colorPalette = ['#f97316', '#3b82f6', '#10b981', '#a855f7', '#f59e0b', '#ec489a', '#06b6d4', '#84cc16'];
 
             // ----- 淡出状态控制 -----
@@ -1031,6 +1575,7 @@
                 hasFadedOut = false;
                 const area = document.getElementById('uploadArea');
                 if (!area) return;
+                area.classList.remove('upload-area-collapsed');
                 const h3 = area.querySelector('h3');
                 const p = area.querySelector('p');
                 const info = document.getElementById('fileInfo');
@@ -1187,7 +1732,7 @@
 
                     if (norm === "商家门店编码" || norm === "门店编码") {
                         colIdx.store = idx;
-                        console.log(`✅ 门店编码列匹配: ${norm}`);
+                        console.log(`[门店编码] 列匹配: ${norm}`);
                     }
                     if (norm === "门店名称") {
                         colIdx.storeName = idx;
@@ -1253,14 +1798,7 @@
                     }
                     let orderTime = null;
                     if (colIdx.orderTime !== -1 && row[colIdx.orderTime]) {
-                        let timeVal = row[colIdx.orderTime];
-                        if (typeof timeVal === 'number') {
-                            let date = new Date((timeVal - 25569) * 86400000);
-                            if (!isNaN(date)) orderTime = date;
-                        } else {
-                            let parsed = new Date(timeVal);
-                            if (!isNaN(parsed)) orderTime = parsed;
-                        }
+                        orderTime = parseOrderTime(row[colIdx.orderTime]);
                     }
                     let deliveryDist = (colIdx.deliveryDist !== -1 && row[colIdx.deliveryDist]) ? parseFloat(row[colIdx
                         .deliveryDist]) : null;
@@ -1336,24 +1874,6 @@
                 return { currentStart, currentEnd, prevStart, prevEnd };
             }
 
-            function getCurrentWeekRange(orders) {
-                const maxDate = getMaxOrderDate(orders);
-                const day = maxDate.getDay();
-                let diffToMonday = day === 0 ? 6 : day - 1;
-                const currentMonday = new Date(maxDate);
-                currentMonday.setDate(maxDate.getDate() - diffToMonday);
-                currentMonday.setHours(0, 0, 0, 0);
-                const currentSunday = new Date(currentMonday);
-                currentSunday.setDate(currentMonday.getDate() + 6);
-                currentSunday.setHours(23, 59, 59, 999);
-                const prevMonday = new Date(currentMonday);
-                prevMonday.setDate(currentMonday.getDate() - 7);
-                const prevSunday = new Date(prevMonday);
-                prevSunday.setDate(prevMonday.getDate() + 6);
-                prevSunday.setHours(23, 59, 59, 999);
-                return { currentStart: currentMonday, currentEnd: currentSunday, prevStart: prevMonday, prevEnd: prevSunday };
-            }
-
             function getCurrentMonthRange(orders) {
                 const maxDate = getMaxOrderDate(orders);
                 const currentStart = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
@@ -1368,242 +1888,205 @@
                 return { currentStart, currentEnd, prevStart, prevEnd };
             }
 
-            function getDefaultDateRangeFromOrders(orders) {
-                if (!orders || orders.length === 0) {
-                    const now = new Date();
-                    const end = new Date(now);
-                    end.setHours(0, 0, 0, 0);
-                    const start = new Date(end);
-                    start.setDate(end.getDate() - 6);
-                    return { startDate: start, endDate: end };
-                }
-                const validDates = orders.filter(o => o.orderTime && !isNaN(o.orderTime.getTime())).map(o => o.orderTime);
-                if (validDates.length === 0) {
-                    const now = new Date();
-                    const end = new Date(now);
-                    end.setHours(0, 0, 0, 0);
-                    const start = new Date(end);
-                    start.setDate(end.getDate() - 6);
-                    return { startDate: start, endDate: end };
-                }
-                const maxDate = new Date(Math.max(...validDates.map(d => d.getTime())));
-                maxDate.setHours(0, 0, 0, 0);
-                const endDate = new Date(maxDate);
-                const startDate = new Date(endDate);
-                startDate.setDate(endDate.getDate() - 6);
-                return { startDate, endDate };
-            }
-
-            function calculateWeekOverWeekForRange(startDate, endDate, orders) {
-                if (!orders.length || !startDate || !endDate) return null;
-                const validOrders = orders.filter(o => o.orderTime && !isNaN(o.orderTime.getTime()));
-                if (validOrders.length === 0) return null;
-                const dayDiff = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1;
-                const prevStartDate = new Date(startDate);
-                prevStartDate.setDate(startDate.getDate() - dayDiff);
-                const prevEndDate = new Date(endDate);
-                prevEndDate.setDate(endDate.getDate() - dayDiff);
-
-                function sumOrdersInRange(start, end) {
-                    let total = 0,
-                        amount = 0,
-                        completed = 0;
-                    validOrders.forEach(o => {
-                        const t = o.orderTime.getTime();
-                        if (t >= start.getTime() && t <= end.getTime() + 86400000 - 1) {
-                            total++;
-                            amount += o.amount;
-                            if (o.status === "完成") completed++;
-                        }
-                    });
-                    const completeRate = total ? (completed / total * 100) : 0;
-                    return { total, amount, completeRate };
-                }
-                const current = sumOrdersInRange(startDate, endDate);
-                const previous = sumOrdersInRange(prevStartDate, prevEndDate);
-                if (previous.total === 0) return null;
-                const orderChange = ((current.total - previous.total) / previous.total * 100).toFixed(1);
-                const amountChange = ((current.amount - previous.amount) / previous.amount * 100).toFixed(1);
-                const rateChange = (current.completeRate - previous.completeRate).toFixed(1);
-                return { current, previous, orderChange, amountChange, rateChange, hasPrevData: true, startDate, endDate,
-                    prevStartDate, prevEndDate };
-            }
-
-            function renderWeekOverWeekCard(orders) {
-                const container = document.getElementById("weekOverWeekContainer");
+            function renderGlobalFilterCard(orders) {
+                const container = document.getElementById("globalFilterContainer");
                 if (!container) return;
-                const targetOrders = orders || allOrders;
-                const defaultRange = getDefaultDateRangeFromOrders(targetOrders);
-                let startDate = defaultRange.startDate;
-                let endDate = defaultRange.endDate;
-                let startDateInput = document.getElementById("wowStartDate");
-                let endDateInput = document.getElementById("wowEndDate");
-                if (startDateInput && startDateInput.value && endDateInput && endDateInput.value) {
-                    startDate = new Date(startDateInput.value);
-                    endDate = new Date(endDateInput.value);
-                    endDate.setHours(23, 59, 59, 999);
-                }
-                const wow = calculateWeekOverWeekForRange(startDate, endDate, targetOrders);
-                const formatDateForInput = (d) =>
-                    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-                const startDateStr = formatDateForInput(startDate);
-                const endDateStr = formatDateForInput(endDate);
-                if (!wow) {
-                    container.innerHTML = `
-                        <div class="card" style="margin-bottom: 1.5rem;">
-                            <div class="card-header"><div class="card-header-left"><i class="fas fa-calendar-week"></i> 周度同比（自定义区间）</div></div>
-                            <div class="wow-date-picker">
-                                <label>对比区间起始:</label><input type="date" id="wowStartDate" value="${startDateStr}">
-                                <label>结束:</label><input type="date" id="wowEndDate" value="${endDateStr}">
-                                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">
-                                    <button id="quickLast7DaysBtn" class="quick-btn">📅 近7天 vs 前7天</button>
-                                    <button id="quickThisWeekBtn" class="quick-btn">📆 本周 vs 上周</button>
-                                    <button id="quickThisMonthBtn" class="quick-btn">🗓️ 本月 vs 上月</button>
-                                </div>
-                                <button id="applyWowRangeBtn">更新同比</button>
-                                <button id="resetWowRangeBtn" class="reset-wow">重置为数据最新7天</button>
-                                <button id="prevWeekBtn" class="reset-wow" style="background:#3b82f6;">对比自然上周同期</button>
-                            </div>
-                            <div class="insight-box" style="margin-top:0; text-align:center;">所选区间无足够对比数据（需前序同期存在订单）</div>
-                        </div>
-                    `;
-                    bindWowDateEvents(targetOrders);
-                    return;
-                }
-                const orderIcon = wow.orderChange >= 0 ? '<i class="fas fa-arrow-up" style="color:#10b981;"></i>' :
-                    '<i class="fas fa-arrow-down" style="color:#ef4444;"></i>';
-                const amountIcon = wow.amountChange >= 0 ? '<i class="fas fa-arrow-up" style="color:#10b981;"></i>' :
-                    '<i class="fas fa-arrow-down" style="color:#ef4444;"></i>';
-                const rateIcon = wow.rateChange >= 0 ? '<i class="fas fa-arrow-up" style="color:#10b981;"></i>' :
-                    '<i class="fas fa-arrow-down" style="color:#ef4444;"></i>';
-                const orderColor = wow.orderChange >= 0 ? "#10b981" : "#ef4444";
-                const amountColor = wow.amountChange >= 0 ? "#10b981" : "#ef4444";
-                const rateColor = wow.rateChange >= 0 ? "#10b981" : "#ef4444";
-                const formatDateShort = (d) => `${d.getMonth()+1}/${d.getDate()}`;
+                const channelSet = new Set(["全部"]);
+                const statusSet = new Set(["全部"]);
+                (orders || []).forEach(o => {
+                    if (o.channel && String(o.channel).trim()) channelSet.add(String(o.channel).trim());
+                    if (o.status && String(o.status).trim()) statusSet.add(String(o.status).trim());
+                });
+                const channelOptions = Array.from(channelSet).map(ch =>
+                    `<option value="${escapeAttr(ch)}" ${globalFilter.channel === ch ? "selected" : ""}>${escapeHtml(ch)}</option>`
+                ).join("");
+                const statusOptions = Array.from(statusSet).map(st =>
+                    `<option value="${escapeAttr(st)}" ${globalFilter.status === st ? "selected" : ""}>${escapeHtml(st)}</option>`
+                ).join("");
                 container.innerHTML = `
                     <div class="card" style="margin-bottom: 1.5rem;">
-                        <div class="card-header"><div class="card-header-left"><i class="fas fa-calendar-week"></i> 周度同比（自定义区间 vs 前同期）</div></div>
-                        <div class="wow-date-picker">
-                            <label>对比区间起始:</label><input type="date" id="wowStartDate" value="${formatDateForInput(wow.startDate)}">
-                            <label>结束:</label><input type="date" id="wowEndDate" value="${formatDateForInput(wow.endDate)}">
-                            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">
-                                <button id="quickLast7DaysBtn" class="quick-btn">📅 近7天 vs 前7天</button>
-                                <button id="quickThisWeekBtn" class="quick-btn">📆 本周 vs 上周</button>
-                                <button id="quickThisMonthBtn" class="quick-btn">🗓️ 本月 vs 上月</button>
-                            </div>
-                            <button id="applyWowRangeBtn">更新同比</button>
-                            <button id="resetWowRangeBtn" class="reset-wow">重置为数据最新7天</button>
-                            <button id="prevWeekBtn" class="reset-wow" style="background:#3b82f6;">对比自然上周同期</button>
+                        <div class="card-header">
+                            <div class="card-header-left"><i class="fas fa-filter"></i> 全局订单筛选</div>
+                            <span class="badge" id="globalFilterHint">全部数据</span>
                         </div>
-                        <div class="wow-stats">
-                            <div class="wow-stat-item"><div class="wow-label">订单数</div><div class="wow-value">${wow.current.total}</div><div class="wow-change" style="color:${orderColor};">${orderIcon} ${Math.abs(wow.orderChange)}%</div><div class="wow-previous">前同期 ${wow.previous.total}</div></div>
-                            <div class="wow-stat-item"><div class="wow-label">销售额 (¥)</div><div class="wow-value">${wow.current.amount.toFixed(0)}</div><div class="wow-change" style="color:${amountColor};">${amountIcon} ${Math.abs(wow.amountChange)}%</div><div class="wow-previous">前同期 ¥${wow.previous.amount.toFixed(0)}</div></div>
-                            <div class="wow-stat-item"><div class="wow-label">完成率</div><div class="wow-value">${wow.current.completeRate.toFixed(1)}%</div><div class="wow-change" style="color:${rateColor};">${rateIcon} ${Math.abs(wow.rateChange).toFixed(1)}pp</div><div class="wow-previous">前同期 ${wow.previous.completeRate.toFixed(1)}%</div></div>
+                        <div class="filter-picker">
+                            <label>开始日期 <input type="date" id="filterStartDate" value="${globalFilter.startDate}"></label>
+                            <label>结束日期 <input type="date" id="filterEndDate" value="${globalFilter.endDate}"></label>
+                            <select id="filterChannelSelect" title="渠道">${channelOptions}</select>
+                            <select id="filterStatusSelect" title="订单状态">${statusOptions}</select>
+                            <button id="applyGlobalFilterBtn"><i class="fas fa-check"></i> 应用筛选</button>
+                            <button id="resetGlobalFilterBtn" class="filter-reset"><i class="fas fa-undo"></i> 重置</button>
+                            <button id="quickFilter7Btn" class="quick-btn"><i class="fas fa-calendar-alt"></i> 近7天</button>
+                            <button id="quickFilter30Btn" class="quick-btn"><i class="fas fa-calendar-week"></i> 近30天</button>
+                            <button id="quickFilterMonthBtn" class="quick-btn"><i class="fas fa-calendar-check"></i> 本月</button>
+                            <button id="quickFilterAllBtn" class="filter-reset"><i class="fas fa-database"></i> 全部时间</button>
                         </div>
-                        <div class="date-range-note">对比区间：${formatDateShort(wow.startDate)} ~ ${formatDateShort(wow.endDate)} &nbsp; vs &nbsp; ${formatDateShort(wow.prevStartDate)} ~ ${formatDateShort(wow.prevEndDate)}</div>
+                        <div class="filter-summary-note" id="globalFilterSummary"></div>
                     </div>
                 `;
-                bindWowDateEvents(targetOrders);
+                bindGlobalFilterEvents(orders);
             }
 
-            function bindWowDateEvents(orders) {
-                const applyBtn = document.getElementById("applyWowRangeBtn");
-                const resetBtn = document.getElementById("resetWowRangeBtn");
-                const prevWeekBtn = document.getElementById("prevWeekBtn");
-                const quickLast7Days = document.getElementById("quickLast7DaysBtn");
-                const quickThisWeek = document.getElementById("quickThisWeekBtn");
-                const quickThisMonth = document.getElementById("quickThisMonthBtn");
+            function bindGlobalFilterEvents(orders) {
+                const applyBtn = document.getElementById("applyGlobalFilterBtn");
+                const resetBtn = document.getElementById("resetGlobalFilterBtn");
+                const startInput = document.getElementById("filterStartDate");
+                const endInput = document.getElementById("filterEndDate");
+                const channelSelect = document.getElementById("filterChannelSelect");
+                const statusSelect = document.getElementById("filterStatusSelect");
 
-                if (applyBtn) {
-                    applyBtn.onclick = () => {
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && startInput.value && endInput && endInput.value) {
-                            renderWeekOverWeekCard(orders);
-                        } else {
-                            alert("请完整选择起始和结束日期");
-                        }
-                    };
-                }
+                const readInputs = () => {
+                    globalFilter.startDate = startInput ? startInput.value : "";
+                    globalFilter.endDate = endInput ? endInput.value : "";
+                    globalFilter.channel = channelSelect ? channelSelect.value : "全部";
+                    globalFilter.status = statusSelect ? statusSelect.value : "全部";
+                };
+
+                const commitFilter = () => {
+                    readInputs();
+                    if (globalFilter.startDate && globalFilter.endDate && globalFilter.startDate > globalFilter.endDate) {
+                        alert("开始日期不能晚于结束日期");
+                        return;
+                    }
+                    renderView();
+                };
+
+                if (applyBtn) applyBtn.onclick = commitFilter;
+
+                const applyQuickRange = (range) => {
+                    globalFilter.startDate = formatDateKey(range.start);
+                    globalFilter.endDate = formatDateKey(range.end);
+                    renderGlobalFilterCard(allOrders);
+                    renderView();
+                };
+
                 if (resetBtn) {
                     resetBtn.onclick = () => {
-                        const defaultRange = getDefaultDateRangeFromOrders(orders);
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && endInput) {
-                            startInput.value =
-                                `${defaultRange.startDate.getFullYear()}-${String(defaultRange.startDate.getMonth()+1).padStart(2,'0')}-${String(defaultRange.startDate.getDate()).padStart(2,'0')}`;
-                            endInput.value =
-                                `${defaultRange.endDate.getFullYear()}-${String(defaultRange.endDate.getMonth()+1).padStart(2,'0')}-${String(defaultRange.endDate.getDate()).padStart(2,'0')}`;
-                            renderWeekOverWeekCard(orders);
-                        }
-                    };
-                }
-                if (prevWeekBtn) {
-                    prevWeekBtn.onclick = () => {
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && startInput.value && endInput && endInput.value) {
-                            let start = new Date(startInput.value);
-                            let end = new Date(endInput.value);
-                            const dayDiff = Math.ceil((end - start) / (1000 * 3600 * 24)) + 1;
-                            const newStart = new Date(start);
-                            newStart.setDate(start.getDate() - dayDiff);
-                            const newEnd = new Date(end);
-                            newEnd.setDate(end.getDate() - dayDiff);
-                            startInput.value =
-                                `${newStart.getFullYear()}-${String(newStart.getMonth()+1).padStart(2,'0')}-${String(newStart.getDate()).padStart(2,'0')}`;
-                            endInput.value =
-                                `${newEnd.getFullYear()}-${String(newEnd.getMonth()+1).padStart(2,'0')}-${String(newEnd.getDate()).padStart(2,'0')}`;
-                            renderWeekOverWeekCard(orders);
-                        } else {
-                            alert("请先选择对比区间");
-                        }
+                        globalFilter = { startDate: "", endDate: "", channel: "全部", status: "全部" };
+                        renderGlobalFilterCard(allOrders);
+                        renderView();
                     };
                 }
 
-                if (quickLast7Days) {
-                    quickLast7Days.onclick = () => {
+                const quick7 = document.getElementById("quickFilter7Btn");
+                const quick30 = document.getElementById("quickFilter30Btn");
+                const quickMonth = document.getElementById("quickFilterMonthBtn");
+                const quickAll = document.getElementById("quickFilterAllBtn");
+                if (quick7) {
+                    quick7.onclick = () => {
                         const range = getLast7DaysRange(orders);
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && endInput) {
-                            startInput.value =
-                                `${range.currentStart.getFullYear()}-${String(range.currentStart.getMonth()+1).padStart(2,'0')}-${String(range.currentStart.getDate()).padStart(2,'0')}`;
-                            endInput.value =
-                                `${range.currentEnd.getFullYear()}-${String(range.currentEnd.getMonth()+1).padStart(2,'0')}-${String(range.currentEnd.getDate()).padStart(2,'0')}`;
-                            renderWeekOverWeekCard(orders);
-                        }
+                        applyQuickRange({ start: range.currentStart, end: range.currentEnd });
                     };
                 }
-                if (quickThisWeek) {
-                    quickThisWeek.onclick = () => {
-                        const range = getCurrentWeekRange(orders);
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && endInput) {
-                            startInput.value =
-                                `${range.currentStart.getFullYear()}-${String(range.currentStart.getMonth()+1).padStart(2,'0')}-${String(range.currentStart.getDate()).padStart(2,'0')}`;
-                            endInput.value =
-                                `${range.currentEnd.getFullYear()}-${String(range.currentEnd.getMonth()+1).padStart(2,'0')}-${String(range.currentEnd.getDate()).padStart(2,'0')}`;
-                            renderWeekOverWeekCard(orders);
-                        }
+                if (quick30) {
+                    quick30.onclick = () => {
+                        const maxDate = getMaxOrderDate(orders);
+                        const end = new Date(maxDate);
+                        const start = new Date(end);
+                        start.setDate(end.getDate() - 29);
+                        applyQuickRange({ start, end });
                     };
                 }
-                if (quickThisMonth) {
-                    quickThisMonth.onclick = () => {
+                if (quickMonth) {
+                    quickMonth.onclick = () => {
                         const range = getCurrentMonthRange(orders);
-                        const startInput = document.getElementById("wowStartDate");
-                        const endInput = document.getElementById("wowEndDate");
-                        if (startInput && endInput) {
-                            startInput.value =
-                                `${range.currentStart.getFullYear()}-${String(range.currentStart.getMonth()+1).padStart(2,'0')}-${String(range.currentStart.getDate()).padStart(2,'0')}`;
-                            endInput.value =
-                                `${range.currentEnd.getFullYear()}-${String(range.currentEnd.getMonth()+1).padStart(2,'0')}-${String(range.currentEnd.getDate()).padStart(2,'0')}`;
-                            renderWeekOverWeekCard(orders);
-                        }
+                        applyQuickRange({ start: range.currentStart, end: range.currentEnd });
                     };
                 }
+                if (quickAll) {
+                    quickAll.onclick = () => {
+                        globalFilter = { startDate: "", endDate: "", channel: "全部", status: "全部" };
+                        renderGlobalFilterCard(allOrders);
+                        renderView();
+                    };
+                }
+            }
+
+            function updateGlobalFilterSummary(orders) {
+                const el = document.getElementById("globalFilterSummary");
+                const hint = document.getElementById("globalFilterHint");
+                if (!el) return;
+                const parts = [];
+                if (globalFilter.startDate || globalFilter.endDate) {
+                    parts.push((globalFilter.startDate || "最早") + " ~ " + (globalFilter.endDate || "最新"));
+                }
+                if (globalFilter.channel && globalFilter.channel !== "全部") parts.push("渠道：" + globalFilter.channel);
+                if (globalFilter.status && globalFilter.status !== "全部") parts.push("状态：" + globalFilter.status);
+                const active = parts.length > 0;
+                el.innerHTML = (active ? "已筛选：" + parts.join(" · ") + "，" : "") + "当前结果 " + orders.length + " 单";
+                if (hint) {
+                    hint.textContent = active ? "筛选已生效" : "全部数据";
+                    hint.style.background = active ? "#fff3eb" : "";
+                    hint.style.color = active ? "#f97316" : "";
+                }
+            }
+
+            function applyGlobalFilter(orders) {
+                if (!orders || orders.length === 0) return orders || [];
+                let result = orders;
+                if (globalFilter.startDate || globalFilter.endDate) {
+                    const start = globalFilter.startDate ? new Date(globalFilter.startDate + "T00:00:00") : null;
+                    const end = globalFilter.endDate ? new Date(globalFilter.endDate + "T23:59:59.999") : null;
+                    result = result.filter(o => o.orderTime && !isNaN(o.orderTime.getTime()) &&
+                        (!start || o.orderTime.getTime() >= start.getTime()) &&
+                        (!end || o.orderTime.getTime() <= end.getTime()));
+                }
+                if (globalFilter.channel && globalFilter.channel !== "全部") {
+                    result = result.filter(o => o.channel === globalFilter.channel);
+                }
+                if (globalFilter.status && globalFilter.status !== "全部") {
+                    result = result.filter(o => o.status === globalFilter.status);
+                }
+                return result;
+            }
+
+            function getCurrentViewOrders() {
+                return applyGlobalFilter(filterOrdersByProvince(currentSelectedProvince));
+            }
+
+            function renderAllDashboards(orders) {
+                renderKPI(orders);
+                renderCityDistribution(orders);
+                renderDynamicModules(orders);
+                renderChannelModules(orders, currentSelectedProvince);
+                currentSelectedStoreCity = "全国";
+                buildStoreCitySelector(orders);
+                currentStorePage = 1;
+                currentStoreSearch = "";
+                const searchInput = document.getElementById("storeSearchInput");
+                if (searchInput) searchInput.value = "";
+                renderStoreRankingWithPagination();
+                updateGlobalFilterSummary(orders);
+            }
+
+            function renderView() {
+                const orders = getCurrentViewOrders();
+                renderAllDashboards(orders);
+                refreshHeatmapForProvince(orders);
+            }
+
+            function formatDateKey(date) {
+                return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+            }
+
+            function escapeAttr(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function parseOrderTime(timeVal) {
+                if (timeVal === undefined || timeVal === null || timeVal === "") return null;
+                if (typeof timeVal === 'number') {
+                    // Excel 日期序号按本地时区还原，避免东八区整体偏移
+                    const utcDate = new Date((timeVal - 25569) * 86400000);
+                    const date = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000);
+                    return isNaN(date) ? null : date;
+                }
+                if (timeVal instanceof Date) {
+                    return isNaN(timeVal.getTime()) ? null : timeVal;
+                }
+                const parsed = new Date(timeVal);
+                return isNaN(parsed) ? null : parsed;
             }
 
             // ========== 核心修改：renderCityDistribution 中的占比计算 ==========
@@ -1673,14 +2156,30 @@
             let heatmapChart = null;
             let currentMapLevel = "national"; // "national" | "province"
             let currentMapProvince = "";
+            let currentMapZoom = 1.65;
+            let productPage = 1;
+            let productFilter = "all";
+            let regionPage = 1;
+            let regionSortMode = "amount";
             let allOrdersForHeatmap = [];
+            let currentRankingTab = "product";
+            let lastRankingState = {};
+            let heatmapFilter = null;
+            let heatmapRefreshSeq = 0;
 
-            function initHeatmap(orders) {
+            function refreshHeatmapForProvince(orders) {
+                heatmapFilter = null;
                 allOrdersForHeatmap = orders;
-                loadChinaMapData().then(() => {
+                const seq = ++heatmapRefreshSeq;
+                const render = () => {
+                    if (seq !== heatmapRefreshSeq) return;
                     renderNationalMap(orders);
-                    updateRankings(orders, "national");
-                });
+                };
+                if (echarts.getMap && echarts.getMap("china")) {
+                    render();
+                } else {
+                    loadChinaMapData().then(render);
+                }
             }
 
             async function loadChinaMapData() {
@@ -1732,8 +2231,11 @@
                 if (heatmapChart) heatmapChart.dispose();
 
                 heatmapChart = echarts.init(container);
+                const mapTitleBase = (currentSelectedProvince && currentSelectedProvince !== "全国") ?
+                    "全国订单热力图（当前筛选：" + currentSelectedProvince + "）" : "全国订单热力图";
+                const mapTitle = heatmapFilter ? heatmapFilter.value + " - " + mapTitleBase : mapTitleBase;
                 heatmapChart.setOption({
-                    title: { text: "全国订单热力图", left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
+                    title: { text: mapTitle, left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
                     tooltip: {
                         trigger: "item",
                         formatter: function(p) {
@@ -1756,8 +2258,10 @@
                         type: "map",
                         map: "china",
                         roam: true,
+                        center: [104, 35],
+                        zoom: currentMapZoom,
                         selectedMode: false,
-                        label: { show: true, fontSize: 7 },
+                        label: { show: true, fontSize: 9 },
                         emphasis: { label: { fontSize: 9, fontWeight: "bold" }, itemStyle: { areaColor: "#fdba74" } },
                         data: data
                     }]
@@ -1766,6 +2270,12 @@
                 heatmapChart.on("click", function(params) {
                     if (params.name) drillDownToProvince(params.name, orders);
                 });
+                var zd = document.getElementById("zoomLevelDisplay");
+                if (zd) {
+                    if (zd.tagName === "INPUT") zd.value = Math.round(currentMapZoom * 100) + "%";
+                    else zd.textContent = Math.round(currentMapZoom * 100) + "%";
+                }
+                updateRankings(orders, "national");
             }
 
             async function drillDownToProvince(provinceName, orders) {
@@ -1796,8 +2306,10 @@
                 const container = document.getElementById("heatmapContainer");
                 if (heatmapChart) heatmapChart.dispose();
                 heatmapChart = echarts.init(container);
-                heatmapChart.setOption({
-                    title: { text: provinceName + " - 订单热力图", left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
+                var mapBaseTitle = provinceName + " - 订单热力图";
+                    var mapTitle = heatmapFilter ? heatmapFilter.value + " - " + mapBaseTitle : mapBaseTitle;
+                    heatmapChart.setOption({
+                        title: { text: mapTitle, left: "center", textStyle: { fontSize: 16, fontWeight: 600, color: "#1e466e" } },
                     tooltip: {
                         trigger: "item",
                         formatter: function(p) {
@@ -1821,7 +2333,7 @@
                         map: provinceName,
                         roam: true,
                         selectedMode: false,
-                        label: { show: true, fontSize: 7 },
+                        label: { show: true, fontSize: 9 },
                         emphasis: { label: { fontSize: 9, fontWeight: "bold" }, itemStyle: { areaColor: "#fdba74" } },
                         data: data
                     }]
@@ -1830,139 +2342,579 @@
                 updateRankings(orders, "province", provinceName, provinceOrders);
             }
 
+            function updateMapZoom() {
+                if (!heatmapChart) return;
+                heatmapChart.setOption({
+                    series: [{ zoom: currentMapZoom }]
+                });
+                var zd = document.getElementById("zoomLevelDisplay");
+                if (zd) {
+                    if (zd.tagName === "INPUT") zd.value = Math.round(currentMapZoom * 100) + "%";
+                    else zd.textContent = Math.round(currentMapZoom * 100) + "%";
+                }
+            }
+
+            function mapZoomIn() {
+                currentMapZoom = Math.min(currentMapZoom * 1.2, 5);
+                updateMapZoom();
+            }
+            window.mapZoomIn = mapZoomIn;
+
+            function mapZoomOut() {
+                currentMapZoom = Math.max(currentMapZoom / 1.2, 0.5);
+                updateMapZoom();
+            }
+            window.mapZoomOut = mapZoomOut;
+
+            function setMapZoom(valStr) {
+                var pct = parseFloat(valStr);
+                if (isNaN(pct) || pct < 10) pct = 10;
+                if (pct > 1000) pct = 1000;
+                currentMapZoom = pct / 100;
+                if (heatmapChart) {
+                    heatmapChart.setOption({
+                        series: [{ zoom: currentMapZoom }]
+                    });
+                }
+                var inp = document.getElementById("zoomLevelDisplay");
+                if (inp) inp.value = Math.round(pct) + "%";
+            }
+            window.setMapZoom = setMapZoom;
+
+            window.addEventListener("resize", function() {
+                if (heatmapChart) heatmapChart.resize();
+            });
+
             function backToNationalMap() {
+                heatmapFilter = null;
                 renderNationalMap(allOrdersForHeatmap);
                 updateRankings(allOrdersForHeatmap, "national");
             }
             window.backToNationalMap = backToNationalMap;
 
-            function updateRankings(orders, level, provinceName, provinceOrders) {
-                const r1 = document.getElementById("rankList1");
-                const r2 = document.getElementById("rankList2");
-                const r3 = document.getElementById("rankList3");
-                const t1 = document.getElementById("rankTitle1");
-                const t2 = document.getElementById("rankTitle2");
-                const t3 = document.getElementById("rankTitle3");
-                if (!r1 || !r2 || !r3) return;
-
-                if (level === "national") {
-                    t1.innerHTML = "🏆 省份榜";
-                    t2.innerHTML = "🏪 门店榜（全国）";
-
-                    // Province top 5
-                    const provMap = new Map();
-                    orders.forEach(o => {
-                        let p = o.province;
-                        if (!p || p === "?" || p === "未知省份") return;
-                        const amt = parseFloat(o.amount) || 0;
-                        if (!provMap.has(p)) provMap.set(p, { amount: 0, count: 0 });
-                        const d = provMap.get(p);
-                        d.amount += amt; d.count++;
-                    });
-                    const provRank = Array.from(provMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
-                        .sort((a,b) => b.amt - a.amt).slice(0,5);
-                    r1.innerHTML = provRank.map((item,i) =>
-                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
-
-                    ).join("");
-                    // Product ranking (national)
-                    t3.innerHTML = "📦 商品榜（全国）";
-                    var prodMapN = new Map();
+            function getFilteredOrders() {
+                if (!heatmapFilter) return allOrdersForHeatmap;
+                if (heatmapFilter.type === "product") {
+                    var storeCodes = new Set();
                     importedProducts.forEach(function(p) {
-                        if (!p.productName) return;
-                        var a = p.amount || 0;
-                        if (!prodMapN.has(p.productName)) prodMapN.set(p.productName, { amount: 0, count: 0 });
-                        var d = prodMapN.get(p.productName);
-                        d.amount += a; d.count++;
+                        if (p.productName === heatmapFilter.value && p.storeCode) storeCodes.add(p.storeCode);
                     });
-                    var prodRankN = Array.from(prodMapN.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.amt - a.amt; }).slice(0,5);
-                    if (prodRankN.length > 0) {
-                        r3.innerHTML = prodRankN.map(function(item,i) {
-                            var label = item.name.length > 18 ? item.name.substring(0, 16) + ".." : item.name;
-                            return '<div class="rank-item"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+item.name+'">'+label+'</span><span class="rank-val">¥'+(item.amt/10000).toFixed(1)+'万</span></div>';
-                        }).join("");
-                    } else {
-                        r3.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无商品数据，请导入商品订单数据</div>';
+                    return allOrdersForHeatmap.filter(function(o) { return o.storeCode && storeCodes.has(o.storeCode); });
+                }
+                if (heatmapFilter.type === "spec") {
+                    var storeCodes = new Set();
+                    importedProducts.forEach(function(p) {
+                        if (p.productSpec === heatmapFilter.value && p.storeCode) storeCodes.add(p.storeCode);
+                    });
+                    return allOrdersForHeatmap.filter(function(o) { return o.storeCode && storeCodes.has(o.storeCode); });
+                }
+                if (heatmapFilter.type === "store") {
+                    return allOrdersForHeatmap.filter(function(o) { return o.storeCode === heatmapFilter.value; });
+                }
+                if (heatmapFilter.type === "city") {
+                    return allOrdersForHeatmap.filter(function(o) { return o.city === heatmapFilter.value; });
+                }
+                if (heatmapFilter.type === "region") {
+                    var regionStoreCodes = new Set();
+                    if (importedStoreMap) {
+                        importedStoreMap.forEach(function(sd, code) {
+                            if (sd.level1Group === heatmapFilter.value) regionStoreCodes.add(code);
+                        });
                     }
+                    return allOrdersForHeatmap.filter(function(o) { return o.storeCode && regionStoreCodes.has(o.storeCode); });
+                }
+                return allOrdersForHeatmap;
+            }
 
-                    // Store top 5 national
-                    const storeMap = new Map();
-                    orders.forEach(o => {
-                        const code = o.storeCode;
-                        if (!code) return;
-                        const amt = parseFloat(o.amount) || 0;
-                        if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", province: o.province || "", amount: 0 });
-                        storeMap.get(code).amount += amt;
-                    });
-                    const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, prov:d.province, amt:d.amount}))
-                        .sort((a,b) => b.amt - a.amt).slice(0,5);
-                    r2.innerHTML = storeRank.map((item,i) =>
-                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
-                    ).join("");
+            function updateRankings(orders, level, provinceName, provinceOrders) {
+                lastRankingState = { orders, level, provinceName, provinceOrders };
+                productPage = 1;
+                regionPage = 1;
+                renderCurrentRanking();
+            }
 
-                } else {
-                    const po = provinceOrders || orders.filter(o => o.province === provinceName);
-                    t1.innerHTML = "🏆 城市榜（"+provinceName+"）";
-                    t2.innerHTML = "🏪 门店榜（"+provinceName+"）";
+            function renderCurrentRanking() {
+                const state = lastRankingState;
+                if (!state.orders) return;
+                const { orders, level, provinceName, provinceOrders } = state;
+                const container = document.getElementById("rankListSingle");
+                const title = document.getElementById("rankTitleSingle");
+                if (!container || !title) return;
+                container.innerHTML = "";
 
-                    // City top 5
-                    const cityMap = new Map();
-                    po.forEach(o => {
-                        let c = o.city;
-                        if (!c || c === "?" || c === "未知城市") return;
-                        const amt = parseFloat(o.amount) || 0;
-                        if (!cityMap.has(c)) cityMap.set(c, { amount: 0, count: 0 });
-                        const d = cityMap.get(c);
-                        d.amount += amt; d.count++;
-                    });
-                    const cityRank = Array.from(cityMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
-                        .sort((a,b) => b.amt - a.amt).slice(0,5);
-                    r1.innerHTML = cityRank.map((item,i) =>
-                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
-                    ).join("");
-
-                    // Store top 5 in province
-                    const storeMap = new Map();
-                    po.forEach(o => {
-                        const code = o.storeCode;
-                        if (!code) return;
-                        const amt = parseFloat(o.amount) || 0;
-                        if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", amount: 0 });
-                        storeMap.get(code).amount += amt;
-                    });
-                    const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, amt:d.amount}))
-                        .sort((a,b) => b.amt - a.amt).slice(0,5);
-                    r2.innerHTML = storeRank.map((item,i) =>
-                        `<div class="rank-item"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-sub">${item.city}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
-
-                    ).join("");
-                    // Product ranking (province)
-                    t3.innerHTML = "📦 商品榜（"+provinceName+"）";
-                    var prodMapP = new Map();
-                    importedProducts.forEach(function(p) {
-                        if (!p.productName) return;
-                        if (!p.storeCode || !importedStoreMap || !importedStoreMap.has(p.storeCode)) return;
-                        var ps = importedStoreMap.get(p.storeCode);
-                        if (ps.province !== provinceName) return;
-                        var a = p.amount || 0;
-                        if (!prodMapP.has(p.productName)) prodMapP.set(p.productName, { amount: 0, count: 0 });
-                        var d = prodMapP.get(p.productName);
-                        d.amount += a; d.count++;
-                    });
-                    var prodRankP = Array.from(prodMapP.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.amt - a.amt; }).slice(0,5);
-                    if (prodRankP.length > 0) {
-                        r3.innerHTML = prodRankP.map(function(item,i) {
-                            var label = item.name.length > 18 ? item.name.substring(0, 16) + ".." : item.name;
-                            return '<div class="rank-item"><span class="rank-num">'+(i+1)+'</span><span class="rank-name" title="'+item.name+'">'+label+'</span><span class="rank-val">¥'+(item.amt/10000).toFixed(1)+'万</span></div>';
-                        }).join("");
+                if (currentRankingTab === "province") {
+                    if (level === "national") {
+                        title.innerHTML = '<i class="fas fa-trophy"></i> 省份榜';
+                        const provMap = new Map();
+                        orders.forEach(o => {
+                            let p = o.province;
+                            if (!p || p === "?" || p === "未知省份") return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!provMap.has(p)) provMap.set(p, { amount: 0, count: 0 });
+                            const d = provMap.get(p);
+                            d.amount += amt; d.count++;
+                        });
+                        const provRank = Array.from(provMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
+                            .sort((a,b) => b.amt - a.amt).slice(0,5);
+                        container.innerHTML = provRank.map((item,i) =>
+                            `<div class="rank-item" onclick=\"heatmapClickProvince('${item.name.replace(/'/g, "\\'")}')\" style="cursor:pointer;"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                        ).join("");
                     } else {
-                        r3.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无商品数据</div>';
+                        const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                        title.innerHTML = '<i class="fas fa-city"></i> 城市榜（'+provinceName+'）';
+                        const cityMap = new Map();
+                        po.forEach(o => {
+                            let c = o.city;
+                            if (!c || c === "?" || c === "未知城市") return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!cityMap.has(c)) cityMap.set(c, { amount: 0, count: 0 });
+                            const d = cityMap.get(c);
+                            d.amount += amt; d.count++;
+                        });
+                        const cityRank = Array.from(cityMap.entries()).map(([n,d]) => ({name:n, amt:d.amount, cnt:d.count}))
+                            .sort((a,b) => b.amt - a.amt).slice(0,5);
+                        container.innerHTML = cityRank.map((item,i) =>
+                            `<div class="rank-item" onclick=\"heatmapClickCity('${item.name.replace(/'/g, "\\'")}')\" style="cursor:pointer;"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                        ).join("");
+                    }
+                } else if (currentRankingTab === "store") {
+                    if (level === "national") {
+                        title.innerHTML = '<i class="fas fa-store"></i> 门店榜（全国）';
+                        const storeMap = new Map();
+                        orders.forEach(o => {
+                            const code = o.storeCode;
+                            if (!code) return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", province: o.province || "", amount: 0 });
+                            storeMap.get(code).amount += amt;
+                        });
+                        const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, prov:d.province, amt:d.amount}))
+                            .sort((a,b) => b.amt - a.amt).slice(0,5);
+                        container.innerHTML = storeRank.map((item,i) =>
+                            `<div class="rank-item" onclick=\"heatmapClickStore('${item.code.replace(/'/g, "\\'")}')\" style="cursor:pointer;"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                        ).join("");
+                    } else {
+                        const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                        title.innerHTML = '<i class="fas fa-store"></i> 门店榜（'+provinceName+'）';
+                        const storeMap = new Map();
+                        po.forEach(o => {
+                            const code = o.storeCode;
+                            if (!code) return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!storeMap.has(code)) storeMap.set(code, { name: o.storeName || code, city: o.city || "", amount: 0 });
+                            storeMap.get(code).amount += amt;
+                        });
+                        const storeRank = Array.from(storeMap.entries()).map(([c,d]) => ({code:c, name:d.name, city:d.city, amt:d.amount}))
+                            .sort((a,b) => b.amt - a.amt).slice(0,5);
+                        container.innerHTML = storeRank.map((item,i) =>
+                            `<div class="rank-item" onclick=\"heatmapClickStore('${item.code.replace(/'/g, "\\'")}')\" style="cursor:pointer;"><span class="rank-num">${i+1}</span><span class="rank-name">${item.name}</span><span class="rank-sub">${item.city}</span><span class="rank-val">¥${(item.amt/10000).toFixed(1)}万</span></div>`
+                        ).join("");
+                    }
+                } else if (currentRankingTab === "product") {
+                    if (level === "national") {
+                        const productScopeLabel = (currentSelectedProvince && currentSelectedProvince !== "全国") ? currentSelectedProvince : "全国";
+                        title.innerHTML = '<i class="fas fa-box"></i> 商品榜（' + productScopeLabel + '）<span class="product-filter-btns"><button class="filter-btn active" data-filter="all" onclick="setProductFilter(\'all\')">全部</button><button class="filter-btn" data-filter="xijiu" onclick="setProductFilter(\'xijiu\')">习酒</button><button class="filter-btn" data-filter="nonxijiu" onclick="setProductFilter(\'nonxijiu\')">非习酒</button></span>';
+                        var filteredProducts = importedProducts;
+                        if (productFilter === "xijiu") {
+                            filteredProducts = importedProducts.filter(function(p) {
+                                return p.productName && (p.productName.indexOf("习酒") >= 0 || p.productName.indexOf("知交") >= 0 || p.productName.indexOf("習酒") >= 0);
+                            });
+                        } else if (productFilter === "nonxijiu") {
+                            filteredProducts = importedProducts.filter(function(p) {
+                                return !p.productName || !(p.productName.indexOf("习酒") >= 0 || p.productName.indexOf("知交") >= 0 || p.productName.indexOf("習酒") >= 0);
+                            });
+                        }
+                        if (currentSelectedProvince !== "全国" && importedStoreMap) {
+                            filteredProducts = filteredProducts.filter(function(p) {
+                                return p.storeCode && importedStoreMap.has(p.storeCode) && importedStoreMap.get(p.storeCode).province === currentSelectedProvince;
+                            });
+                        }
+                        var prodMap = new Map();
+                        filteredProducts.forEach(function(p) {
+                            if (!p.productName) return;
+                            var a = p.amount || 0;
+                            if (!prodMap.has(p.productName)) prodMap.set(p.productName, { amount: 0, count: 0 });
+                            var d = prodMap.get(p.productName);
+                            d.amount += a; d.count++;
+                        });
+                        var prodRank = Array.from(prodMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.cnt - a.cnt; });
+                        var prodTotalPages = Math.ceil(prodRank.length / 8) || 1;
+                        if (productPage > prodTotalPages) productPage = 1;
+                        var pageStart = (productPage - 1) * 8;
+                        var pageEnd = pageStart + 8;
+                        var pageItems = prodRank.slice(pageStart, pageEnd);
+                        if (prodRank.length > 0) {
+                            var pageHtml = pageItems.map(function(item,i) {
+                                var rankNum = pageStart + i + 1;
+                                var safeName = item.name.replace(/'/g, "\\'");
+                                return '<div class="rank-item" onclick="heatmapClickProduct(\''+safeName+'\')" style="cursor:pointer;"><span class="rank-num">'+rankNum+'</span><span class="rank-name" title="'+item.name+'">'+item.name+'</span><span class="rank-val">'+(item.cnt||0)+'单 ¥'+(item.amt/10000).toFixed(1)+'万</span></div>';
+                            }).join("");
+                            var paginationHtml = '<div class="pagination-bar"><button class="page-btn" onclick="productPrevPage()">‹</button><input class="page-input" id="productPageInput" value="'+productPage+'" onchange="productGoToPage(this.value)"><span class="page-total">/ '+prodTotalPages+' 页</span><button class="page-btn" onclick="productNextPage()">›</button></div>';
+                            var cityChartOrders = orders;
+                            if (productFilter === "xijiu") {
+                                var xjStoreCodes = new Set();
+                                importedProducts.forEach(function(pp) {
+                                    if (pp.productName && (pp.productName.indexOf("习酒") >= 0 || pp.productName.indexOf("知交") >= 0 || pp.productName.indexOf("習酒") >= 0) && pp.storeCode) xjStoreCodes.add(pp.storeCode);
+                                });
+                                cityChartOrders = orders.filter(function(o) { return o.storeCode && xjStoreCodes.has(o.storeCode); });
+                            } else if (productFilter === "nonxijiu") {
+                                var xjStoreCodes = new Set();
+                                importedProducts.forEach(function(pp) {
+                                    if (pp.productName && (pp.productName.indexOf("习酒") >= 0 || pp.productName.indexOf("知交") >= 0 || pp.productName.indexOf("習酒") >= 0) && pp.storeCode) xjStoreCodes.add(pp.storeCode);
+                                });
+                                cityChartOrders = orders.filter(function(o) { return !o.storeCode || !xjStoreCodes.has(o.storeCode); });
+                            }
+                            var cityHtml = buildCityChartHtml(cityChartOrders);
+                            container.innerHTML = pageHtml + paginationHtml + cityHtml;
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无商品数据，请导入商品订单数据</div>';
+                        }
+                    } else {
+                        const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                        title.innerHTML = '<i class="fas fa-box"></i> 商品榜（'+provinceName+'）<span class="product-filter-btns"><button class="filter-btn active" data-filter="all" onclick="setProductFilter(\'all\')">全部</button><button class="filter-btn" data-filter="xijiu" onclick="setProductFilter(\'xijiu\')">习酒</button><button class="filter-btn" data-filter="nonxijiu" onclick="setProductFilter(\'nonxijiu\')">非习酒</button></span>';
+                        var filteredProducts = importedProducts;
+                        if (productFilter === "xijiu") {
+                            filteredProducts = importedProducts.filter(function(p) {
+                                return p.productName && (p.productName.indexOf("习酒") >= 0 || p.productName.indexOf("知交") >= 0 || p.productName.indexOf("習酒") >= 0);
+                            });
+                        } else if (productFilter === "nonxijiu") {
+                            filteredProducts = importedProducts.filter(function(p) {
+                                return !p.productName || !(p.productName.indexOf("习酒") >= 0 || p.productName.indexOf("知交") >= 0 || p.productName.indexOf("習酒") >= 0);
+                            });
+                        }
+                        var prodMap = new Map();
+                        filteredProducts.forEach(function(p) {
+                            if (!p.productName) return;
+                            if (!p.storeCode || !importedStoreMap || !importedStoreMap.has(p.storeCode)) return;
+                            var ps = importedStoreMap.get(p.storeCode);
+                            if (ps.province !== provinceName) return;
+                            var a = p.amount || 0;
+                            if (!prodMap.has(p.productName)) prodMap.set(p.productName, { amount: 0, count: 0 });
+                            var d = prodMap.get(p.productName);
+                            d.amount += a; d.count++;
+                        });
+                        var prodRank = Array.from(prodMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.cnt - a.cnt; });
+                        var prodTotalPages = Math.ceil(prodRank.length / 8) || 1;
+                        if (productPage > prodTotalPages) productPage = 1;
+                        var pageStart = (productPage - 1) * 8;
+                        var pageEnd = pageStart + 8;
+                        var pageItems = prodRank.slice(pageStart, pageEnd);
+                        if (prodRank.length > 0) {
+                            var pageHtml = pageItems.map(function(item,i) {
+                                var rankNum = pageStart + i + 1;
+                                var safeName = item.name.replace(/'/g, "\\'");
+                                return '<div class="rank-item" onclick="heatmapClickProduct(\''+safeName+'\')" style="cursor:pointer;"><span class="rank-num">'+rankNum+'</span><span class="rank-name" title="'+item.name+'">'+item.name+'</span><span class="rank-val">'+(item.cnt||0)+'单 ¥'+(item.amt/10000).toFixed(1)+'万</span></div>';
+                            }).join("");
+                            var paginationHtml = '<div class="pagination-bar"><button class="page-btn" onclick="productPrevPage()">‹</button><input class="page-input" id="productPageInput" value="'+productPage+'" onchange="productGoToPage(this.value)"><span class="page-total">/ '+prodTotalPages+' 页</span><button class="page-btn" onclick="productNextPage()">›</button></div>';
+                            var cityOrders = provinceOrders || orders.filter(function(o) { return o.province === provinceName; });
+                            var cityChartOrders = cityOrders;
+                            if (productFilter === "xijiu") {
+                                var xjStoreCodes = new Set();
+                                importedProducts.forEach(function(pp) {
+                                    if (pp.productName && (pp.productName.indexOf("习酒") >= 0 || pp.productName.indexOf("知交") >= 0 || pp.productName.indexOf("習酒") >= 0) && pp.storeCode) xjStoreCodes.add(pp.storeCode);
+                                });
+                                cityChartOrders = cityOrders.filter(function(o) { return o.storeCode && xjStoreCodes.has(o.storeCode); });
+                            } else if (productFilter === "nonxijiu") {
+                                var xjStoreCodes = new Set();
+                                importedProducts.forEach(function(pp) {
+                                    if (pp.productName && (pp.productName.indexOf("习酒") >= 0 || pp.productName.indexOf("知交") >= 0 || pp.productName.indexOf("習酒") >= 0) && pp.storeCode) xjStoreCodes.add(pp.storeCode);
+                                });
+                                cityChartOrders = cityOrders.filter(function(o) { return !o.storeCode || !xjStoreCodes.has(o.storeCode); });
+                            }
+                            var cityHtml = buildCityChartHtml(cityChartOrders);
+                            container.innerHTML = pageHtml + paginationHtml + cityHtml;
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无商品数据</div>';
+                        }
+                    }
+                } else if (currentRankingTab === "spec") {
+                    if (level === "national") {
+                        const specScopeLabel = (currentSelectedProvince && currentSelectedProvince !== "全国") ? currentSelectedProvince : "全国";
+                        title.innerHTML = '<i class="fas fa-tags"></i> 规格榜（' + specScopeLabel + '）';
+                        var specProducts = importedProducts;
+                        if (currentSelectedProvince !== "全国" && importedStoreMap) {
+                            specProducts = importedProducts.filter(function(p) {
+                                return p.storeCode && importedStoreMap.has(p.storeCode) && importedStoreMap.get(p.storeCode).province === currentSelectedProvince;
+                            });
+                        }
+                        var specMap = new Map();
+                        var specHasData = false;
+                        specProducts.forEach(function(p) {
+                            if (!p.productSpec) return;
+                            specHasData = true;
+                            var a = p.amount || 0;
+                            if (!specMap.has(p.productSpec)) specMap.set(p.productSpec, { amount: 0, count: 0 });
+                            var d = specMap.get(p.productSpec);
+                            d.amount += a; d.count++;
+                        });
+                        if (specHasData) {
+                            var totalCount = 0, totalAmount = 0;
+                            specMap.forEach(function(v) { totalCount += v.count; totalAmount += v.amount; });
+                            var specRank = Array.from(specMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.amt - a.amt; }).slice(0,5);
+                            container.innerHTML = specRank.map(function(item,i) {
+                                var cntPct = totalCount > 0 ? ((item.cnt / totalCount) * 100).toFixed(1) : "0.0";
+                                var amtPct = totalAmount > 0 ? ((item.amt / totalAmount) * 100).toFixed(1) : "0.0";
+                                var label = item.name.length > 18 ? item.name.substring(0, 16) + ".." : item.name;
+                                var safeName = item.name.replace(/'/g, "\\'");
+                                return '<div class="rank-item" style="flex-direction:column;align-items:stretch;gap:1px;padding:4px 6px;cursor:pointer;" onclick="heatmapClickSpec(\''+safeName+'\')">'
+                                    + '<div style="display:flex;align-items:center;gap:6px;width:100%;">'
+                                    + '<span class="rank-num">' + (i+1) + '</span>'
+                                    + '<span class="rank-name" title="' + item.name + '">' + label + '</span>'
+                                    + '</div>'
+                                    + '<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#475569;padding-left:26px;">'
+                                    + '<span>' + item.cnt + '单(' + cntPct + '%)</span>'
+                                    + '<span>¥' + (item.amt/10000).toFixed(1) + '万(' + amtPct + '%)</span>'
+                                    + '</div></div>';
+                            }).join("");
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无规格数据</div>';
+                        }
+                    } else {
+                        const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                        title.innerHTML = '<i class="fas fa-tags"></i> 规格榜（'+provinceName+'）';
+                        var specMap = new Map();
+                        var specHasData = false;
+                        importedProducts.forEach(function(p) {
+                            if (!p.productSpec) return;
+                            if (!p.storeCode || !importedStoreMap || !importedStoreMap.has(p.storeCode)) return;
+                            var ps = importedStoreMap.get(p.storeCode);
+                            if (ps.province !== provinceName) return;
+                            specHasData = true;
+                            var a = p.amount || 0;
+                            if (!specMap.has(p.productSpec)) specMap.set(p.productSpec, { amount: 0, count: 0 });
+                            var d = specMap.get(p.productSpec);
+                            d.amount += a; d.count++;
+                        });
+                        if (specHasData) {
+                            var totalCount = 0, totalAmount = 0;
+                            specMap.forEach(function(v) { totalCount += v.count; totalAmount += v.amount; });
+                            var specRank = Array.from(specMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; }).sort(function(a,b) { return b.amt - a.amt; }).slice(0,5);
+                            container.innerHTML = specRank.map(function(item,i) {
+                                var cntPct = totalCount > 0 ? ((item.cnt / totalCount) * 100).toFixed(1) : "0.0";
+                                var amtPct = totalAmount > 0 ? ((item.amt / totalAmount) * 100).toFixed(1) : "0.0";
+                                var label = item.name.length > 18 ? item.name.substring(0, 16) + ".." : item.name;
+                                var safeName = item.name.replace(/'/g, "\\'");
+                                return '<div class="rank-item" style="flex-direction:column;align-items:stretch;gap:1px;padding:4px 6px;cursor:pointer;" onclick="heatmapClickSpec(\''+safeName+'\')">'
+                                    + '<div style="display:flex;align-items:center;gap:6px;width:100%;">'
+                                    + '<span class="rank-num">' + (i+1) + '</span>'
+                                    + '<span class="rank-name" title="' + item.name + '">' + label + '</span>'
+                                    + '</div>'
+                                    + '<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#475569;padding-left:26px;">'
+                                    + '<span>' + item.cnt + '单(' + cntPct + '%)</span>'
+                                    + '<span>¥' + (item.amt/10000).toFixed(1) + '万(' + amtPct + '%)</span>'
+                                    + '</div></div>';
+                            }).join("");
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无规格数据</div>';
+                        }
+                    }
+                } else if (currentRankingTab === "region") {
+                    if (level === "national") {
+                        title.innerHTML = '<i class="fas fa-map-marked-alt"></i> 片区榜（全国）<span style="display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;"><button class="filter-btn '+(regionSortMode==="count"?"active":"")+'" onclick="setRegionSort(\'count\')">单量</button><button class="filter-btn '+(regionSortMode==="amount"?"active":"")+'" onclick="setRegionSort(\'amount\')">金额</button></span>';
+                        const regionMap = new Map();
+                        orders.forEach(o => {
+                            const code = o.storeCode;
+                            if (!code) return;
+                            const sd = importedStoreMap ? importedStoreMap.get(code) : null;
+                            const group = sd ? sd.level1Group : "";
+                            if (!group) return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!regionMap.has(group)) regionMap.set(group, { name: group, amount: 0, count: 0 });
+                            const d = regionMap.get(group);
+                            d.amount += amt; d.count++;
+                        });
+                        var regionRank = Array.from(regionMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; });
+                        if (regionSortMode === "count") {
+                            regionRank.sort(function(a,b) { return b.cnt - a.cnt; });
+                        } else {
+                            regionRank.sort(function(a,b) { return b.amt - a.amt; });
+                        }
+                        if (regionRank.length > 0) {
+                            var regionGridHtml = '<div class="region-grid">' + regionRank.map(function(item,i) {
+                                var safeGroup = item.name.replace(/\'/g, "\\'");
+                                var valText = regionSortMode === "count" ? item.cnt + "单" : "¥" + (item.amt/10000).toFixed(1) + "万";
+                                return '<div class="region-item" onclick="heatmapClickRegion(\''+safeGroup+'\')" style="cursor:pointer;"><span class="region-item-rank">'+(i+1)+'</span><span class="region-item-name" title="'+item.name+'">'+item.name+'</span><span class="region-item-val">'+valText+'</span></div>';
+                            }).join('') + '</div>';
+                            container.innerHTML = regionGridHtml;
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无片区数据，请导入含门店分组的门店数据</div>';
+                        }
+                    } else {
+                        const po = provinceOrders || orders.filter(o => o.province === provinceName);
+                        title.innerHTML = '<i class="fas fa-map-marked-alt"></i> 片区榜（'+provinceName+'）<span style="display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;"><button class="filter-btn '+(regionSortMode==="count"?"active":"")+'" onclick="setRegionSort(\'count\')">单量</button><button class="filter-btn '+(regionSortMode==="amount"?"active":"")+'" onclick="setRegionSort(\'amount\')">金额</button></span>';
+                        const regionMap = new Map();
+                        po.forEach(o => {
+                            const code = o.storeCode;
+                            if (!code) return;
+                            const sd = importedStoreMap ? importedStoreMap.get(code) : null;
+                            const group = sd ? sd.level1Group : "";
+                            if (!group) return;
+                            const amt = parseFloat(o.amount) || 0;
+                            if (!regionMap.has(group)) regionMap.set(group, { name: group, amount: 0, count: 0 });
+                            const d = regionMap.get(group);
+                            d.amount += amt; d.count++;
+                        });
+                        var regionRank = Array.from(regionMap.entries()).map(function(e) { return {name:e[0], amt:e[1].amount, cnt:e[1].count}; });
+                        if (regionSortMode === "count") {
+                            regionRank.sort(function(a,b) { return b.cnt - a.cnt; });
+                        } else {
+                            regionRank.sort(function(a,b) { return b.amt - a.amt; });
+                        }
+                        if (regionRank.length > 0) {
+                            var regionGridHtml = '<div class="region-grid">' + regionRank.map(function(item,i) {
+                                var safeGroup = item.name.replace(/\'/g, "\\'");
+                                var valText = regionSortMode === "count" ? item.cnt + "单" : "¥" + (item.amt/10000).toFixed(1) + "万";
+                                return '<div class="region-item" onclick="heatmapClickRegion(\''+safeGroup+'\')" style="cursor:pointer;"><span class="region-item-rank">'+(i+1)+'</span><span class="region-item-name" title="'+item.name+'">'+item.name+'</span><span class="region-item-val">'+valText+'</span></div>';
+                            }).join('') + '</div>';
+                            container.innerHTML = regionGridHtml;
+                        } else {
+                            container.innerHTML = '<div style="padding:6px;font-size:0.8rem;color:#94a3b8;">暂无片区数据</div>';
+                        }
                     }
                 }
             }
 
+            function heatmapClickProvince(name) {
+                if (currentMapLevel === "national") {
+                    var fo = getFilteredOrders();
+                    drillDownToProvince(name, fo);
+                }
+            }
+            window.heatmapClickProvince = heatmapClickProvince;
+
+            function heatmapClickCity(cityName) {
+                if (currentMapLevel !== "province") return;
+                heatmapFilter = { type: "city", value: cityName };
+                document.getElementById("backToNationalBtn").style.display = "inline-block";
+                drillDownToProvince(currentMapProvince, getFilteredOrders());
+            }
+            window.heatmapClickCity = heatmapClickCity;
+
+            function heatmapClickStore(storeCode) {
+                heatmapFilter = {type: "store", value: storeCode};
+                document.getElementById("backToNationalBtn").style.display = "inline-block";
+                if (currentMapLevel === "national") {
+                    renderNationalMap(getFilteredOrders());
+                } else {
+                    drillDownToProvince(currentMapProvince, getFilteredOrders());
+                }
+            }
+            window.heatmapClickStore = heatmapClickStore;
+
+            function heatmapClickProduct(productName) {
+                heatmapFilter = {type: "product", value: productName};
+                document.getElementById("backToNationalBtn").style.display = "inline-block";
+                if (currentMapLevel === "national") {
+                    renderNationalMap(getFilteredOrders());
+                } else {
+                    drillDownToProvince(currentMapProvince, getFilteredOrders());
+                }
+            }
+            window.heatmapClickProduct = heatmapClickProduct;
+
+            function heatmapClickSpec(specName) {
+                heatmapFilter = {type: "spec", value: specName};
+                document.getElementById("backToNationalBtn").style.display = "inline-block";
+                if (currentMapLevel === "national") {
+                    renderNationalMap(getFilteredOrders());
+                } else {
+                    drillDownToProvince(currentMapProvince, getFilteredOrders());
+                }
+            }
+            window.heatmapClickSpec = heatmapClickSpec;
+
+            function setProductFilter(type) {
+                productFilter = type;
+                productPage = 1;
+                var allBtns = document.querySelectorAll('.product-filter-btns .filter-btn');
+                allBtns.forEach(function(b) { b.classList.remove('active'); });
+                var activeBtns = document.querySelectorAll('.product-filter-btns .filter-btn[data-filter="'+type+'"]');
+                activeBtns.forEach(function(b) { b.classList.add('active'); });
+                renderCurrentRanking();
+            }
+            window.setProductFilter = setProductFilter;
+
+            function buildCityChartHtml(orders) {
+                if (!orders || orders.length === 0) return "";
+                var cityMap = new Map();
+                orders.forEach(function(o) {
+                    var city = o.city;
+                    if (!city || city === "?" || city === "未知城市") return;
+                    if (!cityMap.has(city)) cityMap.set(city, 0);
+                    cityMap.set(city, cityMap.get(city) + 1);
+                });
+                var cityRank = Array.from(cityMap.entries()).map(function(e) { return {name:e[0], cnt:e[1]}; }).sort(function(a,b) { return b.cnt - a.cnt; }).slice(0,10);
+                if (cityRank.length === 0) return "";
+                var maxCnt = cityRank[0].cnt;
+                var html = '<div class="city-chart"><div class="city-chart-title">城市订单排行</div>';
+                cityRank.forEach(function(c) {
+                    var pct = (c.cnt / maxCnt * 100).toFixed(0);
+                    var safeName = c.name.replace(/'/g, "\\'");
+                    html += '<div class="city-bar-row"><span class="city-bar-name" title="'+safeName+'">'+c.name+'</span><div class="city-bar-track"><div class="city-bar-fill" style="width:'+pct+'%"></div></div><span class="city-bar-val">'+c.cnt+'单</span></div>';
+                });
+                html += '</div>';
+                return html;
+            }
+
+            function heatmapClickRegion(groupName) {
+                heatmapFilter = {type: "region", value: groupName};
+                document.getElementById("backToNationalBtn").style.display = "inline-block";
+                if (currentMapLevel === "national") {
+                    renderNationalMap(getFilteredOrders());
+                } else {
+                    drillDownToProvince(currentMapProvince, getFilteredOrders());
+                }
+            }
+            window.heatmapClickRegion = heatmapClickRegion;
+
+            function regionGoToPage(p) {
+                var page = parseInt(p) || 1;
+                if (page < 1) page = 1;
+                regionPage = page;
+                renderCurrentRanking();
+            }
+            window.regionGoToPage = regionGoToPage;
+
+            function regionPrevPage() { regionGoToPage(regionPage - 1); }
+            window.regionPrevPage = regionPrevPage;
+            function regionNextPage() { regionGoToPage(regionPage + 1); }
+            window.regionNextPage = regionNextPage;
+
+            function setRegionSort(mode) {
+                regionSortMode = mode;
+                regionPage = 1;
+                renderCurrentRanking();
+            }
+            window.setRegionSort = setRegionSort;
+
+            function switchRankingTab(type) {
+                currentRankingTab = type;
+                productFilter = "all";
+                document.getElementById('rankSelect').value = type;
+                renderCurrentRanking();
+            }
+            window.switchRankingTab = switchRankingTab;
+
+            function productGoToPage(p) {
+                var page = parseInt(p) || 1;
+                if (page < 1) page = 1;
+                productPage = page;
+                renderCurrentRanking();
+            }
+            window.productGoToPage = productGoToPage;
+
+            function productPrevPage() {
+                productGoToPage(productPage - 1);
+            }
+            window.productPrevPage = productPrevPage;
+
+            function productNextPage() {
+                productGoToPage(productPage + 1);
+            }
+            window.productNextPage = productNextPage;
+
             function showProvinceRanking() {
-                const filtered = filterOrdersByProvince(currentSelectedProvince);
+                const filtered = getCurrentViewOrders();
                 if (!filtered.length) { alert("当前筛选范围内无数据"); return; }
                 const provCount = new Map();
                 const total = filtered.length;
@@ -2032,9 +2984,9 @@
 
             function getStoreListForCurrentView() {
                 const provinceOrders = filterOrdersByProvince(currentSelectedProvince);
-                let filteredOrders = provinceOrders;
+                let filteredOrders = applyGlobalFilter(provinceOrders);
                 if (currentSelectedStoreCity !== "全国") {
-                    filteredOrders = provinceOrders.filter(o => o.city === currentSelectedStoreCity);
+                    filteredOrders = filteredOrders.filter(o => o.city === currentSelectedStoreCity);
                 }
                 const validStoreOrders = filteredOrders.filter(o => o.storeCode && o.storeCode.trim() !== "");
                 if (validStoreOrders.length === 0) return [];
@@ -2074,15 +3026,16 @@
                     );
                 }
                 currentStoreList = storeList;
-                const totalPages = Math.ceil(storeList.length / storePageSize);
+                const totalPages = Math.ceil(storeList.length / currentStorePageSize);
                 if (totalPages === 0) {
                     container.innerHTML = `<div class="badge warning">当前筛选条件下无门店数据</div>`;
                     document.getElementById("storePagination").innerHTML = "";
                     return;
                 }
                 if (currentStorePage > totalPages) currentStorePage = totalPages;
-                const start = (currentStorePage - 1) * storePageSize;
-                const pageStores = storeList.slice(start, start + storePageSize);
+                if (currentStorePage < 1) currentStorePage = 1;
+                const start = (currentStorePage - 1) * currentStorePageSize;
+                const pageStores = storeList.slice(start, start + currentStorePageSize);
                 let tableHtml =
                     `<table class="table-mini" style="width:100%; min-width:700px;"><thead><tr><th>门店编码</th><th>门店名称</th><th>城市</th><th>订单数</th><th>总金额(¥)</th><th>均价(¥)</th><th>完成率</th></tr></thead><tbody>`;
                 for (const store of pageStores) {
@@ -2092,29 +3045,53 @@
                 }
                 tableHtml += `</tbody>`;
                 container.innerHTML = tableHtml;
-                let paginationHtml = `<div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px; flex-wrap:wrap;">`;
-                if (currentStorePage > 1) paginationHtml +=
-                    `<button class="page-btn" data-page="${currentStorePage-1}">上一页</button>`;
-                for (let i = 1; i <= totalPages; i++) {
-                    if (i === currentStorePage) paginationHtml +=
-                        `<button class="page-btn active" data-page="${i}">${i}</button>`;
-                    else if (Math.abs(i - currentStorePage) <= 2 || i === 1 || i === totalPages) paginationHtml +=
-                        `<button class="page-btn" data-page="${i}">${i}</button>`;
-                    else if (i === currentStorePage - 3 || i === currentStorePage + 3) paginationHtml += `<span>...</span>`;
+                let paginationHtml = `<div class="store-pagination-bar">`;
+                paginationHtml += `<label class="store-page-size">每页 <select id="storePageSizeSelect">`;
+                [10, 20, 50, 100].forEach(size => {
+                    paginationHtml += `<option value="${size}" ${currentStorePageSize === size ? "selected" : ""}>${size}</option>`;
+                });
+                paginationHtml += `</select> 条</label>`;
+                paginationHtml += `<div class="store-pagination-buttons">`;
+                paginationHtml += `<button class="page-btn page-prev" data-page="${currentStorePage - 1}" ${currentStorePage <= 1 ? "disabled" : ""}>上一页</button>`;
+                if (totalPages > 1) {
+                    paginationHtml += `<button class="page-btn${currentStorePage === 1 ? " active" : ""}" data-page="1">1</button>`;
+                    const windowSize = 5;
+                    let startPage = Math.max(2, currentStorePage - 2);
+                    let endPage = Math.min(totalPages - 1, startPage + windowSize - 1);
+                    startPage = Math.max(2, endPage - windowSize + 1);
+                    if (startPage > 2) paginationHtml += `<span class="page-ellipsis">…</span>`;
+                    for (let i = startPage; i <= endPage; i++) {
+                        paginationHtml += `<button class="page-btn${i === currentStorePage ? " active" : ""}" data-page="${i}">${i}</button>`;
+                    }
+                    if (endPage < totalPages - 1) paginationHtml += `<span class="page-ellipsis">…</span>`;
+                    paginationHtml += `<button class="page-btn${currentStorePage === totalPages ? " active" : ""}" data-page="${totalPages}">${totalPages}</button>`;
+                } else {
+                    paginationHtml += `<button class="page-btn active" data-page="1">1</button>`;
                 }
-                if (currentStorePage < totalPages) paginationHtml +=
-                    `<button class="page-btn" data-page="${currentStorePage+1}">下一页</button>`;
-                paginationHtml += `</div>`;
-                document.getElementById("storePagination").innerHTML = paginationHtml;
-                document.querySelectorAll(".page-btn").forEach(btn => {
-                    btn.addEventListener("click", (e) => {
-                        const page = parseInt(btn.dataset.page);
-                        if (!isNaN(page)) {
-                            currentStorePage = page;
+                paginationHtml += `<button class="page-btn page-next" data-page="${currentStorePage + 1}" ${currentStorePage >= totalPages ? "disabled" : ""}>下一页</button>`;
+                paginationHtml += `<span class="store-page-total">共 ${totalPages} 页</span>`;
+                paginationHtml += `</div></div>`;
+                const paginationEl = document.getElementById("storePagination");
+                paginationEl.innerHTML = paginationHtml;
+                paginationEl.onclick = (e) => {
+                    const btn = e.target.closest ? e.target.closest(".page-btn") : null;
+                    if (!btn || !paginationEl.contains(btn) || btn.disabled) return;
+                    const page = parseInt(btn.dataset.page);
+                    if (!isNaN(page)) {
+                        currentStorePage = page;
+                        renderStoreRankingWithPagination();
+                    }
+                };
+                paginationEl.onchange = (e) => {
+                    if (e.target && e.target.id === "storePageSizeSelect") {
+                        const size = parseInt(e.target.value);
+                        if (!isNaN(size) && size > 0) {
+                            currentStorePageSize = size;
+                            currentStorePage = 1;
                             renderStoreRankingWithPagination();
                         }
-                    });
-                });
+                    }
+                };
             }
 
             function renderChannelModules(orders, provinceName) {
@@ -2227,20 +3204,7 @@
                 if (filtered.length > 0 && !filtered.includes(currentSelectedProvince)) {
                     currentSelectedProvince = filtered[0];
                     selectEl.value = currentSelectedProvince;
-                    const filteredOrders = filterOrdersByProvince(currentSelectedProvince);
-                    renderCityDistribution(filteredOrders);
-                    renderDynamicModules(filteredOrders);
-
-                    renderChannelModules(filteredOrders, currentSelectedProvince);
-                    renderKPI(filteredOrders);
-                    renderWeekOverWeekCard(filteredOrders);
-                    currentSelectedStoreCity = "全国";
-                    buildStoreCitySelector(filteredOrders);
-                    currentStorePage = 1;
-                    currentStoreSearch = "";
-                    const searchInput = document.getElementById("storeSearchInput");
-                    if (searchInput) searchInput.value = "";
-                    renderStoreRankingWithPagination();
+                    renderView();
                 }
             }
 
@@ -2262,20 +3226,7 @@
                 refreshProvinceSelector("");
                 selectEl.onchange = (e) => {
                     currentSelectedProvince = e.target.value;
-                    const filtered = filterOrdersByProvince(currentSelectedProvince);
-                    renderCityDistribution(filtered);
-                    renderDynamicModules(filtered);
-
-                    renderChannelModules(filtered, currentSelectedProvince);
-                    renderKPI(filtered);
-                    renderWeekOverWeekCard(filtered);
-                    currentSelectedStoreCity = "全国";
-                    buildStoreCitySelector(filtered);
-                    currentStorePage = 1;
-                    currentStoreSearch = "";
-                    const searchInput = document.getElementById("storeSearchInput");
-                    if (searchInput) searchInput.value = "";
-                    renderStoreRankingWithPagination();
+                    renderView();
                 };
                 const searchInput = document.getElementById("provinceSearchInput");
                 if (searchInput) {
@@ -2305,10 +3256,79 @@
                ws['!cols'] = [{ wch: 8 }, { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 15 }, { wch: 15 },
                 { wch: 15 }, { wch: 20 }, { wch: 12 }, { wch: 10 }, { wch: 20 }];
                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-                const fileName = `清洗模板_Sheet1_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.xlsx`;
+                XLSX.utils.book_append_sheet(wb, ws, "订单数据");
+                if (importedStoreMap && importedStoreMap.size > 0) {
+                    var storeExport = [];
+                    importedStoreMap.forEach(function(sd, code) {
+                        storeExport.push({ "门店编码": code, "门店名称": sd.storeName, "省份": sd.province, "城市": sd.city, "区县": sd.district || "", "一级分组": sd.level1Group || "" });
+                    });
+                    var ws2 = XLSX.utils.json_to_sheet(storeExport);
+                    XLSX.utils.book_append_sheet(wb, ws2, "门店数据");
+                }
+                if (importedProducts.length > 0) {
+                    var ws3 = XLSX.utils.json_to_sheet(importedProducts);
+                    XLSX.utils.book_append_sheet(wb, ws3, "商品数据");
+                }
+                const fileName = `清洗模板_三合一_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.xlsx`;
                 XLSX.writeFile(wb, fileName);
            }
+
+            function handleThreeInOneUpload(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var rd = new FileReader();
+                rd.onload = function(ev) {
+                    try {
+                        var dt = new Uint8Array(ev.target.result);
+                        var wb = XLSX.read(dt, { type: 'array' });
+                        var orderSheet = wb.Sheets["订单数据"] || wb.Sheets[wb.SheetNames[0]];
+                        var rawOrders = XLSX.utils.sheet_to_json(orderSheet);
+                        if (!rawOrders || rawOrders.length === 0) { alert("未找到订单数据"); return; }
+                        var orders = rawOrders.map(function(row) { return {
+                            channel: row["渠道"] || "",
+                            status: row["订单状态"] || "",
+                            verify: row["核销状态"] || "",
+                            amount: parseFloat(row["商品总金额"]) || 0,
+                            city: row["城市"] || "",
+                            province: row["省份"] || "",
+                            storeCode: String(row["门店编码"] || ""),
+                            storeName: row["门店名称"] || "",
+                            deliveryDist: row["配送距离(km)"] !== undefined ? parseFloat(row["配送距离(km)"]) : null,
+                            deliveryMethod: row["配送方式"] || "",
+                            orderTime: parseOrderTime(row["支付时间"])
+                        }; });
+                        allOrders = orders;
+                        allOrdersForHeatmap = orders;
+                        var storeSheet = wb.Sheets["门店数据"];
+                        if (storeSheet) {
+                            var rawStores = XLSX.utils.sheet_to_json(storeSheet);
+                            var sm = new Map();
+                            rawStores.forEach(function(s) {
+                                var code = String(s["门店编码"] || "");
+                                if (code) sm.set(code, { storeName: s["门店名称"] || "", province: s["省份"] || "", city: s["城市"] || "", district: s["区县"] || "", level1Group: s["一级分组"] || "" });
+                            });
+                            importedStoreMap = sm.size > 0 ? sm : null;
+                        }
+                        var productSheet = wb.Sheets["商品数据"];
+                        if (productSheet) {
+                            var rawProds = XLSX.utils.sheet_to_json(productSheet);
+                            importedProducts = rawProds.map(function(p) { return {
+                                storeCode: String(p["storeCode"] || p["门店编码"] || ""),
+                                productName: p["productName"] || p["商品名称"] || "",
+                                amount: parseFloat(p["amount"] || p["金额"] || 0),
+                                productSpec: p["productSpec"] || p["商品规格"] || ""
+                            }; });
+                        }
+                        var threeInOneEl = document.getElementById("threeInOneInfo"); threeInOneEl.style.maxHeight = ""; threeInOneEl.style.marginTop = ""; threeInOneEl.style.padding = ""; threeInOneEl.style.border = ""; threeInOneEl.innerHTML = '<i class="fas fa-check-circle" style="color:#10b981;"></i> 已导入 ' + orders.length + ' 单' + (importedStoreMap && importedStoreMap.size ? ', ' + importedStoreMap.size + ' 门店' : '') + (importedProducts.length > 0 ? ', ' + importedProducts.length + ' 商品' : '');
+                        setTimeout(function() { var el = document.getElementById("threeInOneInfo"); if (el) { el.innerHTML = ""; el.style.maxHeight = "0"; el.style.marginTop = "0"; el.style.padding = "0"; el.style.border = "none"; } }, 1000);
+                        renderDashboard(allOrders);
+                        clearCache();
+                    } catch(err) {
+                        alert("解析三合一模板失败: " + err.message);
+                    }
+                };
+                rd.readAsArrayBuffer(file);
+            }
 
             function renderDynamicModules(orders) {
                 if (!orders.length) {
@@ -2348,7 +3368,7 @@
                             .storeCode, (failStoreMap.get(order.storeCode) || 0) + 1); } else if (order.verify ===
                         "不核销" || (order.verify && order.verify.includes("未核销"))) notVerify++;
                     if (order.orderTime && !isNaN(order.orderTime.getTime())) {
-                        const dateStr = order.orderTime.toISOString().slice(0, 10);
+                        const dateStr = formatDateKey(order.orderTime);
                         if (!dateMap.has(dateStr)) dateMap.set(dateStr, { total: 0, success: 0 });
                         let rec = dateMap.get(dateStr);
                         rec.total++;
@@ -2499,7 +3519,7 @@
                 const avgCompleteFilter = completed > 0 ? (completedAmount / completed).toFixed(1) : 0;
                 const avgCancelFilter = cancelled > 0 ? (cancelledAmount / cancelled).toFixed(1) : 0;
                 document.getElementById("amountAnalysis").innerHTML =
-                    `<div class="amount-card"><h4>📊 渠道平均订单额</h4>${channelAvgHtml}</div><div class="amount-card"><h4>✅ 完成 vs 取消 平均额</h4><p>完成订单: ¥${avgCompleteFilter}</p><p>取消订单: ¥${avgCancelFilter}</p><p>${avgCancelFilter < avgCompleteFilter ? "取消订单金额通常较低（可能因缺货、用户取消等原因）" : "取消订单金额偏高（需关注大额订单取消原因）"}</p></div><div class="amount-card"><h4>🏙️ 城市客单价TOP3</h4>${cityAvgHtml}</div>`;
+                    `<div class="amount-card"><h4><i class="fas fa-chart-bar"></i> 渠道平均订单额</h4>${channelAvgHtml}</div><div class="amount-card"><h4><i class="fas fa-balance-scale"></i> 完成 vs 取消 平均额</h4><p>完成订单: ¥${avgCompleteFilter}</p><p>取消订单: ¥${avgCancelFilter}</p><p>${avgCancelFilter < avgCompleteFilter ? "取消订单金额通常较低（可能因缺货、用户取消等原因）" : "取消订单金额偏高（需关注大额订单取消原因）"}</p></div><div class="amount-card"><h4><i class="fas fa-city"></i> 城市客单价TOP3</h4>${cityAvgHtml}</div>`;
                 let peakHour = hourTotal.indexOf(Math.max(...hourTotal));
                 document.getElementById("insightText").innerHTML =
                     `<i class="fas fa-chart-simple"></i> <strong>核心洞察（${currentSelectedProvince}）</strong><br>• 当前筛选范围内订单总数：${totalOrders} 单，总金额 ¥${totalAmount.toFixed(0)}<br>• 完成率 ${completionPercent}%，核销成功 ${verifySuccess} 笔<br>• 平均配送距离 ${avgDistOverall} km<br>• 订单高峰时段：${peakHour}:00，核销成功率低谷时段需关注`;
@@ -2508,33 +3528,32 @@
 
             function renderDashboard(orders) {
                 if (!orders.length) { alert("无有效订单"); return; }
+                globalFilter = { startDate: "", endDate: "", channel: "全部", status: "全部" };
                 allOrders = enhanceOrdersWithProvince(orders);
                 cacheOrders(allOrders);
                 buildProvinceSelector();
-                document.getElementById("cityTopNSelect")?.addEventListener("change", () => { const filtered = filterOrdersByProvince(currentSelectedProvince); renderCityDistribution(filtered); });
-                const initialFiltered = filterOrdersByProvince("全国");
-                renderKPI(initialFiltered);
-                renderWeekOverWeekCard(initialFiltered);
-                renderCityDistribution(initialFiltered);
+                document.getElementById("cityTopNSelect").onchange = () => {
+                    renderCityDistribution(getCurrentViewOrders());
+                };
                 const storeSearchInput = document.getElementById("storeSearchInput");
                 if (storeSearchInput) {
-                    storeSearchInput.addEventListener("input", (e) => {
+                    storeSearchInput.oninput = (e) => {
                         currentStoreSearch = e.target.value;
                         currentStorePage = 1;
                         renderStoreRankingWithPagination();
-                    });
+                    };
                 }
-                renderStoreRankingWithPagination();
+                renderGlobalFilterCard(allOrders);
                 document.getElementById("dashboardContent").classList.remove("hidden");
-                renderDynamicModules(initialFiltered);
-                renderChannelModules(initialFiltered, "全国");
-                initHeatmap(allOrders);
+                renderAllDashboards(getCurrentViewOrders());
+                refreshHeatmapForProvince(getCurrentViewOrders());
 
                 // ----- 数据加载分析完成后，平滑淡出上传区提示文字及图标 -----
                 if (!hasFadedOut && allOrders.length > 0) {
                     hasFadedOut = true;
                     const area = document.getElementById('uploadArea');
                     if (area) {
+                        area.classList.add('upload-area-collapsed');
                         const h3 = area.querySelector('h3');
                         const p = area.querySelector('p');
                         const info = document.getElementById('fileInfo');
@@ -2561,6 +3580,7 @@
                 currentSelectedProvince = "全国";
                 currentSelectedStoreCity = "全国";
                 currentStorePage = 1;
+                currentStorePageSize = 10;
                 currentStoreSearch = "";
                 document.getElementById('dashboardContent').classList.add('hidden');
                 document.getElementById('fileInfo').innerHTML = '';
@@ -2598,6 +3618,7 @@
                         const nameCol = hd.findIndex(function(h) { return h === '商品名称' || h.includes('商品名称'); });
                         const priceCol = hd.findIndex(function(h) { return h === '商品售价' || h.includes('商品售价'); });
                         const qtyCol = hd.findIndex(function(h) { return h === '商品数量' || h.includes('商品数量'); });
+                        const specCol = hd.findIndex(function(h) { return h === '商品规格' || h.includes('规格'); });
                         if (nameCol === -1) { alert("未找到商品名称列"); return; }
                         const products = [];
                         let parsed = 0;
@@ -2610,7 +3631,8 @@
                             var price = (priceCol > -1) ? parseFloat(row[priceCol]) || 0 : 0;
                             var qty = (qtyCol > -1) ? parseFloat(row[qtyCol]) || 1 : 1;
                             var amount = price * qty;
-                            products.push({ storeCode: storeCode, productName: pName, amount: amount });
+                            var spec = (specCol > -1 && row[specCol]) ? String(row[specCol]).trim() : '';
+                            products.push({ storeCode: storeCode, productName: pName, amount: amount, productSpec: spec });
                             parsed++;
                         }
                         importedProducts = products;
@@ -2650,6 +3672,7 @@
                         const codeCol = hd.findIndex(h => h.includes('自有门店编码') || h.includes('门店编码'));
                         const nameCol = hd.findIndex(h => h.includes('门店名称'));
                         const addrCol = hd.findIndex(h => h.includes('省市区'));
+                        const groupCol = hd.findIndex(h => h.includes('一级分组') || h.includes('门店分组') || h.includes('片区') || h.includes('大区'));
                         if (codeCol === -1) { alert("未找到门店编码列"); return; }
                         const storeMap = new Map();
                         let parsed = 0;
@@ -2660,13 +3683,17 @@
                             if (!code) continue;
                             const storeName = (nameCol > -1 ? String(row[nameCol] || '').trim() : "") || code;
                             let province = "", city = "", district = "";
+                            let level1Group = "";
                             if (addrCol > -1 && row[addrCol]) {
                                 const parts = String(row[addrCol]).split("/");
                                 province = parts[0] || "";
                                 city = parts[1] || "";
                                 district = parts[2] || "";
                             }
-                            storeMap.set(code, { storeName, province, city, district });
+                            if (groupCol > -1 && row[groupCol]) {
+                                level1Group = String(row[groupCol]).trim();
+                            }
+                            storeMap.set(code, { storeName, province, city, district, level1Group });
                             parsed++;
                         }
                         importedStoreMap = storeMap;
@@ -2685,15 +3712,9 @@
                             });
                             allOrders = enhanceOrdersWithProvince(allOrders);
                             cacheOrders(allOrders);
-                            const filtered = filterOrdersByProvince(currentSelectedProvince);
-                            renderKPI(filtered);
-                            renderWeekOverWeekCard(filtered);
-                            renderCityDistribution(filtered);
-                            buildStoreCitySelector(filtered);
-                            renderStoreRankingWithPagination();
-                            renderDynamicModules(filtered);
-                            renderChannelModules(filtered, currentSelectedProvince);
-                            initHeatmap(allOrders);
+                            const filtered = getCurrentViewOrders();
+                            renderAllDashboards(filtered);
+                            refreshHeatmapForProvince(filtered);
                             document.getElementById('fileInfo').innerHTML += '<br><span style="font-size:0.75rem;color:#10b981;">门店数据已应用于当前订单</span>';
                         }
                     } catch (err) {
@@ -2791,10 +3812,51 @@
                 };
                 reader.readAsArrayBuffer(file);
             });
+            const productToolOverlayEl = document.getElementById('productToolOverlay');
+            const productToolFrameEl = document.getElementById('productToolFrame');
+            function sendStoresToProductTool() {
+                if (!importedStoreMap || !importedStoreMap.size) return;
+                try {
+                    productToolFrameEl.contentWindow.postMessage({ type: 'SET_STORES', codes: Array.from(importedStoreMap.keys()) }, '*');
+                } catch (e) {}
+            }
+            function openProductTool() {
+                productToolOverlayEl.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                try {
+                    if (productToolFrameEl.contentDocument && productToolFrameEl.contentDocument.readyState === 'complete') {
+                        sendStoresToProductTool();
+                    } else {
+                        productToolFrameEl.onload = function () {
+                            sendStoresToProductTool();
+                            productToolFrameEl.onload = null;
+                        };
+                    }
+                } catch (e) {
+                    productToolFrameEl.onload = function () {
+                        sendStoresToProductTool();
+                        productToolFrameEl.onload = null;
+                    };
+                }
+            }
+            function closeProductTool() {
+                productToolOverlayEl.classList.remove('show');
+                document.body.style.overflow = '';
+            }
             document.getElementById('downloadTemplateBtn').addEventListener('click', downloadTemplate);
             document.getElementById('resetDataBtn').addEventListener('click', resetAll);
             document.getElementById('exportReportBtn').addEventListener('click', exportReportViaPrint);
            document.getElementById('exportCleanDataBtn').addEventListener('click', exportCleanData);
+            document.getElementById('threeInOneBtn').addEventListener('click', function() { document.getElementById('threeInOneInput').click(); });
+            document.getElementById('productToolBtn').addEventListener('click', openProductTool);
+            document.getElementById('productToolClose').addEventListener('click', closeProductTool);
+            productToolOverlayEl.addEventListener('click', function(e) {
+                if (e.target === productToolOverlayEl) closeProductTool();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' || e.keyCode === 27) closeProductTool();
+            });
+            document.getElementById('threeInOneInput').addEventListener('change', handleThreeInOneUpload);
             window.addEventListener('DOMContentLoaded', () => {
                 const cached = loadCachedOrders();
                 if (cached && cached.length && confirm("检测到上次缓存，是否恢复？")) {
@@ -2813,3 +3875,6 @@
         </div>
     </div>
 </html>
+
+
+
