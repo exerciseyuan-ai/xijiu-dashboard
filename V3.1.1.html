@@ -1569,9 +1569,23 @@ body {
 body.embedded {
   background: #f8fafc;
 }
-body.embedded .topbar,
 body.embedded #mobileBar {
   display: none;
+}
+body.embedded .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+body.embedded .brand {
+  display: none;
+}
+body.embedded .actions {
+  margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 body.embedded .app {
   max-width: 100%;
