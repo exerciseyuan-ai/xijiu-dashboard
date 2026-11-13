@@ -1,0 +1,11 @@
+*
+!Dockerfile
+!railway.json
+!README.md
+!feishu_sync_server.py
+!xjdashboardV3.3.10.html
+!数据计算口径与来源说明.html
+!vendor
+!vendor/**
+!webfonts
+!webfonts/**

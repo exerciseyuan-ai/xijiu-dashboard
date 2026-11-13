@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据看板计算口径与来源说明 V3.3.9</title>
+    <style>
+        :root {
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbe4ec;
+            --surface: #ffffff;
+            --soft: #f6f9fb;
+            --teal: #0f766e;
+            --teal-soft: #eaf7f4;
+            --orange: #f97316;
+            --orange-soft: #fff3e8;
+            --red: #b42318;
+            --red-soft: #fff0ef;
+            --blue: #2563eb;
+            --blue-soft: #eef4ff;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background: #eef3f7;
+            color: var(--ink);
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            line-height: 1.65;
+        }
+        .top-line {
+            height: 5px;
+            background: linear-gradient(90deg, var(--teal), #48b8a8 42%, var(--orange));
+        }
+        .page {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 28px 30px 56px;
+        }
+        .doc-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-end;
+            padding: 8px 2px 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            line-height: 1.3;
+            letter-spacing: 0;
+        }
+        .subtitle {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .version {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--teal-soft);
+            color: var(--teal);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        }
+        .summary-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .summary-value {
+            margin-top: 3px;
+            font-size: 24px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+        .summary-note {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+        .layout {
+            display: grid;
+            grid-template-columns: 245px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .toc {
+            position: sticky;
+            top: 18px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .toc-title {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+        .toc a {
+            display: block;
+            padding: 6px 8px;
+            margin: 2px 0;
+            border-radius: 6px;
+            color: #52657a;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .toc a:hover {
+            background: var(--teal-soft);
+            color: var(--teal);
+        }
+        main {
+            min-width: 0;
+        }
+        section {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+        }
+        section:target {
+            outline: 2px solid rgba(15, 118, 110, 0.22);
+        }
+        h2 {
+            margin: 0 0 14px;
+            font-size: 19px;
+            line-height: 1.4;
+            letter-spacing: 0;
+            color: #16324f;
+        }
+        h3 {
+            margin: 20px 0 9px;
+            font-size: 15px;
+            color: #28445f;
+        }
+        p { margin: 8px 0; }
+        ul, ol { margin: 8px 0 8px 22px; padding: 0; }
+        li { margin: 5px 0; }
+        code {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 1px 5px;
+            color: #334155;
+            font-family: Consolas, "SFMono-Regular", monospace;
+            font-size: 12px;
+        }
+        .notice {
+            border-left: 4px solid var(--orange);
+            background: var(--orange-soft);
+            padding: 12px 14px;
+            border-radius: 6px;
+            color: #7c3f0d;
+            font-size: 13px;
+            margin: 12px 0;
+        }
+        .notice.info {
+            border-left-color: var(--blue);
+            background: var(--blue-soft);
+            color: #1e3f83;
+        }
+        .notice.danger {
+            border-left-color: var(--red);
+            background: var(--red-soft);
+            color: #7a271f;
+        }
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            margin: 10px 0 14px;
+        }
+        table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #dfe7ee;
+            padding: 9px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f2f6f9;
+            color: #334155;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        tbody tr:nth-child(even) { background: #fbfcfd; }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .tag.ok { background: #e9f8f0; color: #15803d; }
+        .tag.fix { background: var(--blue-soft); color: var(--blue); }
+        .tag.warn { background: var(--orange-soft); color: #c2410c; }
+        .tag.danger { background: var(--red-soft); color: var(--red); }
+        .formula {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 7px;
+            padding: 12px 14px;
+            margin: 9px 0 13px;
+            overflow-x: auto;
+            font-family: Consolas, "SFMono-Regular", monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .box {
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            padding: 13px 14px;
+            background: var(--soft);
+        }
+        .box h3 { margin-top: 0; }
+        .footer {
+            margin-top: 18px;
+            text-align: center;
+            color: #7b8ca0;
+            font-size: 11px;
+        }
+        @media (max-width: 1050px) {
+            .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .layout { grid-template-columns: 1fr; }
+            .toc { position: static; }
+            .toc a { display: inline-block; }
+        }
+        @media (max-width: 700px) {
+            .page { padding: 18px 14px 36px; }
+            .doc-head { display: block; }
+            .version { display: inline-block; margin-top: 10px; }
+            .summary-grid { grid-template-columns: 1fr; }
+            section { padding: 17px 15px; }
+            .two-col { grid-template-columns: 1fr; }
+            h1 { font-size: 22px; }
+            h2 { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-line"></div>
+    <div class="page">
+        <header class="doc-head">
+            <div>
+                <h1>数据看板计算口径与来源说明</h1>
+                <div class="subtitle">习酒即时零售与抖音本地生活 · 数据准确性审计 · 审计日期 2026-11-13</div>
+            </div>
+            <div class="version">看板版本 V3.3.9</div>
+        </header>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">本地生活订单</div>
+                <div class="summary-value">5,212</div>
+                <div class="summary-note">订单编号去重后的订单数</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">有效核销订单</div>
+                <div class="summary-value">571</div>
+                <div class="summary-note">与订单表可关联的唯一订单</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">可关联售后订单</div>
+                <div class="summary-value">876</div>
+                <div class="summary-note">订单范围内的唯一售后订单</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">核销地图可定位</div>
+                <div class="summary-value">2 / 571</div>
+                <div class="summary-note">当前仅提供 5 家门店样表</div>
+            </div>
+        </div>
+
+        <div class="layout">
+            <nav class="toc">
+                <div class="toc-title">目录</div>
+                <a href="#sources">1. 数据来源</a>
+                <a href="#relations">2. 数据关联关系</a>
+                <a href="#filters">3. 筛选与统计范围</a>
+                <a href="#douyin">4. 抖音本地生活指标</a>
+                <a href="#instant">5. 即时零售指标</a>
+                <a href="#risk">6. 高风险门店评分</a>
+                <a href="#audit">7. 审计发现与修正</a>
+                <a href="#fields">8. 字段使用清单</a>
+                <a href="#limits">9. 剩余限制</a>
+                <a href="#checklist">10. 复核清单</a>
+            </nav>
+
+            <main>
+                <section id="sources">
+                    <h2>1. 数据来源</h2>
+                    <p>看板不访问第三方 API，所有统计均来自本地上传的 Excel 文件。数据导入后在浏览器内完成解析、去重、关联和汇总，不上传服务器。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>数据表</th><th>当前文件规模</th><th>主要用途</th><th>关键字段</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>订单-成交明细</td>
+                                    <td>5,212 行 × 102 列</td>
+                                    <td>订单总量、金额、状态、商品、渠道、待使用及售后关联主表</td>
+                                    <td>订单编号、订单状态、下单时间、支付时间、商品名称、用户实付、订单实收、退款金额、成交渠道、带货角色、下单来源、商品品类</td>
+                                </tr>
+                                <tr>
+                                    <td>核销明细</td>
+                                    <td>1,038 行 × 72 列；964 个唯一订单</td>
+                                    <td>核销订单、核销金额、核销时效、核销门店和撤销核销判断</td>
+                                    <td>订单编号、核销状态、支付时间、下单时间、核销时间、撤销核销时间、核销门店ID、核销门店、商品名称</td>
+                                </tr>
+                                <tr>
+                                    <td>售后明细</td>
+                                    <td>2,017 行 × 24 列；2,017 个唯一订单</td>
+                                    <td>售后订单数、退款金额、售后状态和原因排行</td>
+                                    <td>订单编号、售后状态、售后类型、售后原因、发起申请时间、售后完成时间、退款金额</td>
+                                </tr>
+                                <tr>
+                                    <td>门店记录表</td>
+                                    <td>5 行 × 22 列</td>
+                                    <td>将核销门店映射到省份、城市，用于热力图和省榜</td>
+                                    <td>门店ID、门店名称、省份、城市、行政区、详细地址、营业状态</td>
+                                </tr>
+                                <tr>
+                                    <td>即时零售三合一/四合一订单表</td>
+                                    <td>按上传批次</td>
+                                    <td>即时零售订单、渠道、状态、金额、配送距离与门店业绩</td>
+                                    <td>订单编号、渠道、订单状态、核销状态、商品总金额、用户地址、支付时间、配送距离、配送方式、省份、城市、商家门店编码、门店名称</td>
+                                </tr>
+                                <tr>
+                                    <td>商品数据</td>
+                                    <td>按上传批次</td>
+                                    <td>商品榜、规格榜、商品筛选后的地图联动</td>
+                                    <td>订单编号、商家门店编码、商品名称、商品规格、商品售价、商品数量、商品总金额</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="notice info">当前审计数据中，订单表与核销/售后表不是完全同批次：部分明细订单编号无法在订单主表中找到。因此看板只统计能与当前订单表关联的明细，并在筛选区显示可关联数量。</div>
+                    <h3>飞书在线同步</h3>
+                    <p>V3.3.9 增加“从飞书同步”入口。由于飞书开放平台接口不允许浏览器直接跨域调用，页面通过同源轻量服务 <code>feishu_sync_server.py</code> 请求飞书，再由浏览器自动导入返回数据。App Secret 只随当前同步请求发送，成功后立即从页面输入框清空，不写入 localStorage。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>飞书子表</th><th>看板用途</th><th>读取方式</th></tr></thead>
+                            <tbody>
+                                <tr><td>零售门店</td><td>即时零售门店与省市映射</td><td>自有门店编码、门店名称、一级分组、门店所属省市区</td></tr>
+                                <tr><td>零售订单明细</td><td>即时零售订单主表</td><td>渠道订单号、渠道、状态、金额、支付时间、门店编码</td></tr>
+                                <tr><td>零售订单商品</td><td>商品榜、规格榜、商品地图筛选</td><td>渠道订单号、门店编码、商品名称、规格、售价、数量</td></tr>
+                                <tr><td>抖音门店记录表</td><td>本地生活核销省市映射</td><td>门店ID、门店名称、省份、城市、行政区</td></tr>
+                                <tr><td>抖音订单</td><td>本地生活订单与商品分析</td><td>订单编号、状态、支付时间、商品名称、订单实收、渠道</td></tr>
+                                <tr><td>抖音核销</td><td>有效核销、核销时长、热力图</td><td>订单编号、核销状态、核销时间、撤销时间、核销门店ID</td></tr>
+                                <tr><td>抖音售后</td><td>售后数量、退款金额、原因排行</td><td>订单编号、售后状态、售后原因、发起时间、退款金额</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="notice">飞书同步服务按每批 600 行分块读取大表，单次请求最长等待 120 秒，网络超时自动重试 3 次。若实时读取最终失败，会加载上次成功同步的本地缓存并明确标记“飞书缓存”。表格中存在一个空白子表“A”，不会参与看板映射。</div>
+                </section>
+
+                <section id="relations">
+                    <h2>2. 数据关联关系</h2>
+                    <div class="formula">抖音本地生活：
+订单主表.订单编号  =  核销明细.订单编号
+订单主表.订单编号  =  售后明细.订单编号
+核销明细.核销门店ID  =  门店记录表.门店ID       （优先）
+规范化(核销明细.核销门店) = 规范化(门店记录表.门店名称)  （后备）
+
+即时零售：
+订单主表.商家门店编码 = 门店数据.门店编码
+商品数据.订单编号     = 订单主表.订单编号       （优先）
+商品数据.商家门店编码 = 订单主表.商家门店编码   （无订单编号时回退）</div>
+                    <ul>
+                        <li><strong>订单去重：</strong>抖音订单按“订单编号”保留首条，当前 5,212 行全部唯一。</li>
+                        <li><strong>有效核销：</strong>同一订单有多条核销记录时，按核销时间/撤销时间中较晚的事件确定最终状态；只有最终状态为“已核销”才计入有效核销。</li>
+                        <li><strong>门店匹配：</strong>不使用模糊包含匹配，避免同名关键字误关联。先匹配门店ID，再匹配去空格、转小写后的完整门店名称。</li>
+                        <li><strong>商品精确关联：</strong>V3.3.9 起优先使用“订单编号 + 商家门店编码”。只有商品表缺少订单编号时，才按门店编码回退估算，并在页面标注“条”和估算提示。</li>
+                    </ul>
+                </section>
+
+                <section id="filters">
+                    <h2>3. 筛选与统计范围</h2>
+                    <ul>
+                        <li><strong>开始/结束日期：</strong>抖音本地生活优先使用“支付时间”，支付时间为空时才使用“下单时间”；即时零售使用导入后的“支付时间”。</li>
+                        <li><strong>订单状态、成交渠道：</strong>先按日期、状态、渠道过滤订单，再以过滤后的订单编号集合限定核销、售后、商品和地图数据。</li>
+                        <li><strong>未关联明细：</strong>核销或售后明细中的订单编号若不在当前筛选订单集合内，不进入相应指标。</li>
+                        <li><strong>近 7 天/近 30 天：</strong>以当前数据中的最新支付日期为结束日，向前取 7 天或 30 个自然日。</li>
+                        <li><strong>地图筛选：</strong>地图图表始终基于当前日期、状态、渠道及所选商品/规格过滤后的订单集合重新计算。</li>
+                    </ul>
+                </section>
+
+                <section id="douyin">
+                    <h2>4. 抖音本地生活指标口径</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>指标</th><th>计算公式</th><th>数据来源与说明</th><th>当前结果</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>全部订单</td><td>去重后的订单编号数量</td><td>订单表；按当前筛选范围</td><td>5,212</td></tr>
+                                <tr><td>订单总金额</td><td>Σ 订单实收</td><td>订单表“订单实收”，不是“用户实付”，不扣减退款</td><td>¥763,016</td></tr>
+                                <tr><td>核销订单</td><td>有效核销的唯一订单数</td><td>核销明细最终状态为“已核销”，且订单存在于当前订单范围</td><td>571</td></tr>
+                                <tr><td>核销总金额</td><td>Σ 有效核销订单的订单实收</td><td>订单表“订单实收”；展示核销毛实收，不扣减核销后退款</td><td>¥146,054</td></tr>
+                                <tr><td>核销率</td><td>有效核销订单数 ÷ 全部订单数 × 100%</td><td>分母为当前筛选范围内全部订单，包括待使用和取消订单</td><td>11.0%</td></tr>
+                                <tr><td>平均核销时长</td><td>Σ(核销时间 − 支付时间) ÷ 有效样本数</td><td>只使用最终有效核销记录；支付时间或核销时间缺失、时长为负数时排除</td><td>33.9 小时</td></tr>
+                                <tr><td>核销中位时间</td><td>核销时长升序后的中位数</td><td>偶数个样本取中间两个值的平均</td><td>17.6 小时</td></tr>
+                                <tr><td>P90 核销时长</td><td>线性插值分位数，位置 = (n−1) × 0.9</td><td>用于观察长尾核销延迟</td><td>101.3 小时</td></tr>
+                                <tr><td>待使用订单</td><td>状态为“待使用”且未有效核销的订单数</td><td>避免已核销但状态尚未同步的订单重复计入待使用</td><td>3,767</td></tr>
+                                <tr><td>售后订单</td><td>当前订单范围内售后明细的唯一订单数</td><td>售后表订单编号去重，可包含核销前退款和核销后退款</td><td>876</td></tr>
+                                <tr><td>退款金额</td><td>Σ 可关联售后记录的退款金额</td><td>仅统计与当前订单范围关联的售后明细</td><td>¥112,472</td></tr>
+                                <tr><td>售后原因排行</td><td>按“售后原因”分组计数</td><td>统计售后明细行数，同一订单有多条原因时分别计数</td><td>按原因降序</td></tr>
+                                <tr><td>成交渠道分布</td><td>按订单“成交渠道”分组计数</td><td>统计订单数，不按金额或商品行数</td><td>订单占比</td></tr>
+                                <tr><td>到店券生命周期</td><td>已核销 + 待使用 + 未使用取消 + 核销后售后</td><td>四类互斥；已核销中扣除核销后发生售后的订单，后者单独展示</td><td>569 + 3,767 + 874 + 2</td></tr>
+                                <tr><td>商品榜</td><td>按有效核销订单的“商品名称”分组计数和汇总订单实收</td><td>一个订单计 1 单；商品名称为空时归为“未标注商品”</td><td>按核销订单数排序</td></tr>
+                                <tr><td>全国核销热力图</td><td>按核销门店的省份汇总核销订单数和订单实收</td><td>颜色深浅按核销金额，提示框同时展示金额和订单数；无法匹配省市的门店不进入地图</td><td>当前可定位 2 单</td></tr>
+                                <tr><td>核销门店表现</td><td>按有效核销门店分组</td><td>统计唯一订单、核销事件、核销时长中位数、24小时内占比、7天以上占比；页面仅展示订单数≥5的门店</td><td>低样本门店不排名</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>生命周期互斥规则</h3>
+                    <div class="formula">已核销（生命周期）= 有效核销订单 − 核销后售后订单
+待使用（生命周期）= 状态待使用 且 未有效核销 且 未进入核销后售后
+未使用取消（生命周期）= 订单状态包含“取消”
+核销后售后（生命周期）= 售后申请时间晚于最终核销时间
+
+四项应满足：合计 = 全部订单</div>
+                </section>
+
+                <section id="instant">
+                    <h2>5. 即时零售指标口径</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>指标/模块</th><th>计算方式</th><th>来源字段</th><th>注意事项</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>总订单</td><td>解析后订单行数</td><td>渠道、订单状态、商品总金额</td><td>渠道为空的行当前不计入订单</td></tr>
+                                <tr><td>商品总金额</td><td>Σ 商品总金额</td><td>商品总金额/订单金额</td><td>按导入模板字段数值化后求和</td></tr>
+                                <tr><td>平均订单额</td><td>商品总金额 ÷ 总订单</td><td>商品总金额、订单行</td><td>分母包含所有状态订单</td></tr>
+                                <tr><td>完成率</td><td>状态严格等于“完成”的订单 ÷ 总订单</td><td>订单状态</td><td>不回退匹配“已完成”等其他文案</td></tr>
+                                <tr><td>平均配送距离</td><td>Σ 有效配送距离 ÷ 有效距离订单数</td><td>配送距离(km)</td><td>空白或非数字距离不参与平均</td></tr>
+                                <tr><td>核销异常</td><td>核销失败 + 不核销/包含“未核销”的订单数</td><td>核销状态</td><td>与“完成率”是两个不同口径</td></tr>
+                                <tr><td>渠道业绩</td><td>按渠道统计订单数、金额、取消数和取消率</td><td>渠道、商品总金额、订单状态</td><td>取消只识别严格等于“取消”的状态</td></tr>
+                                <tr><td>城市订单排行</td><td>按城市分组计数；占比分母含未知城市订单</td><td>城市、用户地址回退解析</td><td>排行列表本身排除“未知城市”</td></tr>
+                                <tr><td>核销健康度</td><td>核销成功、核销失败、不核销分组计数</td><td>核销状态、商家门店编码</td><td>失败门店TOP5按核销失败行数排序</td></tr>
+                                <tr><td>时段/趋势</td><td>按支付时间的小时和自然日分组</td><td>支付时间</td><td>趋势最多展示最后 30 个有数据日期</td></tr>
+                                <tr><td>门店订单排行</td><td>按商家门店编码分组</td><td>商家门店编码、门店名称、金额、状态</td><td>无门店编码订单不进入门店榜</td></tr>
+                                <tr><td>省份/城市榜</td><td>按省份或城市汇总金额和订单数</td><td>省份、城市、商品总金额</td><td>缺失城市会尝试从用户地址解析</td></tr>
+                                <tr><td>片区榜</td><td>按门店一级分组汇总</td><td>门店数据.一级分组</td><td>门店未关联片区时不进入片区榜</td></tr>
+                                <tr><td>商品榜</td><td>有订单编号时按唯一订单计数；无订单编号时按商品记录计数</td><td>商品数据.订单编号、商家门店编码、商品名称</td><td>无订单编号时页面显示“条”，地图筛选为门店级回退估算</td></tr>
+                                <tr><td>商品地图筛选</td><td>优先按商品数据订单编号匹配订单；无订单编号时按门店编码回退</td><td>订单编号、商家门店编码</td><td>V3.3.9 已修复清单一度只保留门店关联的问题</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="risk">
+                    <h2>6. 高风险门店评分</h2>
+                    <p>风险门店按商家门店编码分组，评分规则如下。该分数是运营预警规则，不是监管或财务口径。</p>
+                    <div class="formula">完成基准 = 全部范围内“完成”订单占比
+取消基准 = 全部范围内“取消”订单占比
+
+核销失败：有 1 条及以上，加 4 + min(2, 核销失败率)
+未核销：门店订单数 ≥ 15 且未核销率 ≥ 8%，加 2
+取消偏高：门店订单数 ≥ 15 且取消率 ≥ 取消基准 + 5 个百分点，加 2.5
+完成偏低：门店订单数 ≥ 15 且完成率 ≤ 完成基准 − 8 个百分点，加 2
+
+高风险：总分 ≥ 5
+中风险：2.5 ≤ 总分 < 5</div>
+                    <p>高风险门店清单只展示“高风险”，导出字段包括门店编码、名称、城市、订单数、完成率、取消率、核销失败数、未核销数和风险等级。</p>
+                </section>
+
+                <section id="audit">
+                    <h2>7. 审计发现与修正</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>问题</th><th>原口径/表现</th><th>V3.3.9 处理</th><th>状态</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>“核销订单/核销率”使用了订单状态</td>
+                                    <td>按状态“已完成”计算，得到 570 单、10.9%</td>
+                                    <td>改为核销明细最终有效状态，得到 571 单、11.0%</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>核销金额口径混用</td>
+                                    <td>按“已完成”订单实收汇总，¥145,818</td>
+                                    <td>改为有效核销订单订单实收，¥146,054；不扣减核销后退款</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>已核销待使用订单重复</td>
+                                    <td>待使用直接取状态，包含 1 个已核销待同步订单</td>
+                                    <td>待使用排除有效核销订单，变为 3,767 单</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>KPI售后与生命周期售后名称冲突</td>
+                                    <td>KPI售后 876 单，生命周期“售后订单”仅 2 单</td>
+                                    <td>KPI继续表示全部售后订单；生命周期改名为“核销后售后”</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>清洗模板商品数据缺少订单编号</td>
+                                    <td>商品只能按门店关联，无法证明某商品属于某订单</td>
+                                    <td>订单表、商品表均补充订单编号；商品表保留商家门店编码，并使用“订单编号 + 门店编码”双键</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>旧版商品数据按门店回退时被显示为“单”</td>
+                                    <td>商品记录数容易被误读为订单数</td>
+                                    <td>无订单编号时显示“条”，并提示地图筛选为门店级估算</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>抖音与即时零售地图样式重复维护</td>
+                                    <td>两套地图配置分别存在，容易产生样式和交互差异</td>
+                                    <td>统一调用同一个热力图配置函数，共用标题、配色、标签、缩放、下钻和提示框结构</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                                <tr>
+                                    <td>板块切换自动滚动</td>
+                                    <td>切换即时零售/本地生活会滚动到板块顶部</td>
+                                    <td>移除切换时的自动滚动，保留用户当前位置</td>
+                                    <td><span class="tag fix">已修正</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>关于“300 多单商品只显示海南”的复查</h3>
+                    <p>以当前提供的订单、核销、售后和 5 家门店记录表复算：核销订单最多的商品为“【门店自提】53°习酒（圆习酒）500ml×1”，380 单，但 0 单能匹配到当前门店表的省市；第二名“53°银质习酒500ml×1”86 单，其中仅 2 单可定位到陕西省。当前数据中并未出现海南结果。</p>
+                    <div class="notice danger">如果页面曾显示“300 多单只在海南”，优先检查当时导入的门店表是否与当前 5 家样表不同、浏览器是否残留旧缓存，以及核销门店 ID 是否被门店名称回退误匹配。商品销量本身按订单编号去重计算，暂未发现把 300 多单错误汇总到单一省份的代码路径。</div>
+                </section>
+
+                <section id="fields">
+                    <h2>8. 字段使用清单</h2>
+                    <div class="two-col">
+                        <div class="box">
+                            <h3>抖音订单表</h3>
+                            <ul>
+                                <li>订单编号：主键、去重、表间关联</li>
+                                <li>订单状态：待使用、取消、完成辅助判断</li>
+                                <li>支付时间/下单时间：筛选、核销时长、账龄</li>
+                                <li>商品名称：商品榜、商品筛选</li>
+                                <li>用户实付：保留但不作为订单总金额主口径</li>
+                                <li>订单实收：金额类指标</li>
+                                <li>退款金额：保留在订单对象，主要用于字段补充</li>
+                                <li>成交渠道、带货角色、下单来源、商品品类：分布与分类分析</li>
+                            </ul>
+                        </div>
+                        <div class="box">
+                            <h3>核销与售后表</h3>
+                            <ul>
+                                <li>订单编号：与订单表关联</li>
+                                <li>核销状态、核销时间、撤销核销时间：有效核销和时长</li>
+                                <li>核销门店ID、核销门店：匹配省市</li>
+                                <li>售后状态、售后类型、售后原因：售后数量与排行</li>
+                                <li>发起申请时间：判断核销前/核销后售后</li>
+                                <li>售后完成时间：保留，当前未作为主指标筛选</li>
+                                <li>退款金额：退款金额汇总</li>
+                                <li>退款发起方：保留，当前未展示</li>
+                            </ul>
+                        </div>
+                        <div class="box">
+                            <h3>门店表</h3>
+                            <ul>
+                                <li>门店ID：门店匹配首选键</li>
+                                <li>门店名称：ID缺失时完整名称后备匹配</li>
+                                <li>省份、城市：热力图、省榜、城市下钻</li>
+                                <li>行政区/区县：保留，当前地图主要到城市级</li>
+                                <li>详细地址、营业状态：导入保留，当前统计不参与公式</li>
+                            </ul>
+                        </div>
+                        <div class="box">
+                            <h3>即时零售订单与商品</h3>
+                            <ul>
+                                <li>订单编号：与商品数据精确关联</li>
+                                <li>渠道、状态、核销状态、商品总金额：KPI和健康度</li>
+                                <li>支付时间：时段、趋势和全局筛选</li>
+                                <li>配送距离、配送方式：配送分析</li>
+                                <li>省份、城市、用户地址：地区分析</li>
+                                <li>商家门店编码、门店名称：门店和片区分析</li>
+                                <li>商品名称、规格、售价、数量、总金额：商品榜和商品地图</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="limits">
+                    <h2>9. 剩余限制与数据质量提示</h2>
+                    <ul>
+                        <li><span class="tag danger">高影响</span> 当前门店记录表只有 5 家，而有效核销涉及大量其他门店ID。571 个有效核销订单中只有 2 个可匹配省市，因此地图覆盖严重不足。</li>
+                        <li><span class="tag warn">中影响</span> 核销明细 1,038 行、964 个唯一订单，其中只有 575 个唯一订单编号能关联当前订单表；393 个核销订单无法进入订单范围分析。</li>
+                        <li><span class="tag warn">中影响</span> 售后明细 2,017 行，其中 876 个售后订单能关联当前订单表；1,141 个售后订单不在当前订单范围。</li>
+                        <li><span class="tag warn">中影响</span> 旧版商品数据若没有订单编号，热力图只能通过门店编码回退，不能精确到订单商品。</li>
+                        <li><span class="tag ok">已明确</span> 总金额类指标使用“订单实收”，不是“用户实付”，也不自动扣减退款。</li>
+                        <li><span class="tag ok">已明确</span> 完成率与核销率是不同指标：即时零售完成率按状态“完成”，本地生活核销率按有效核销明细。</li>
+                    </ul>
+                </section>
+
+                <section id="checklist">
+                    <h2>10. 复核清单</h2>
+                    <ol>
+                        <li>导入后先看筛选区“订单、核销、售后可关联数量”，确认三张明细表属于同一时间范围。</li>
+                        <li>核对总订单数是否等于源订单表的唯一订单编号数。</li>
+                        <li>核对有效核销订单数是否等于最终状态为“已核销”的唯一订单编号数。</li>
+                        <li>核对生命周期四项合计是否等于全部订单数。</li>
+                        <li>核对地图右上“核销已定位 X/Y 单”，覆盖不足时先补全门店记录表。</li>
+                        <li>商品数据必须优先保留订单编号；只有无法取得订单编号时才接受门店级回退。</li>
+                        <li>核销总金额如业务要求“净核销金额”，需另行规定是否扣减核销后退款；当前版本采用毛实收口径。</li>
+                    </ol>
+                </section>
+
+                <div class="footer">本说明与看板 V3.3.9 同步生成。公式以当前代码实现为准，业务口径变更时应同步更新本文件。</div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

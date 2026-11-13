@@ -1,0 +1,19 @@
+Local runtime dependencies bundled for the dashboard:
+
+- Chart.js 4.4.0
+  Source: https://www.chartjs.org/
+  License: MIT
+
+- Apache ECharts 5.5.0
+  Source: https://echarts.apache.org/
+  License: Apache License 2.0
+
+- SheetJS Community Edition 0.20.2
+  Source: https://sheetjs.com/
+  License: Apache License 2.0
+
+- Font Awesome Free 6.0.0-beta3
+  Source: https://fontawesome.com/
+  Icons: CC BY 4.0
+  Fonts: SIL OFL 1.1
+  Code: MIT

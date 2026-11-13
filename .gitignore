@@ -1,0 +1,49 @@
+# Runtime data and secrets
+.feishu_sync_cache*.json
+.feishu_sync_cache*.json.gz
+.railway-test-cache/
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local and source data
+*.xlsx
+*.xls
+*.doc
+*.docx
+*.zip
+*.png
+
+# Temporary analysis and validation artifacts
+application_layout.json
+audit_data_338.json
+audit_data_338.py
+build_336_test.py
+build_338_linkage_test.py
+build_anomaly_test_3310.py
+improve_qc_docs.py
+inspect_application_layout.py
+inspect_qc_cell_styles.py
+inspect_qc_docs.py
+inspect_qc_pagebreaks.py
+qc_cell_styles.json
+qc_docs_inspection.json
+qc_docs_summary.json
+qc_pagebreaks.json
+summarize_qc_docs.py
+render_qc_before/
+render_qc_after/
+
+# Local launchers
+run_feishu_sync_server.cmd
+启动飞书看板服务.cmd
+启动飞书看板服务.ps1
+
+# Keep only the deployable dashboard version
+xjdashboardV3.2.3.html
+xjdashboardV3.3.[0-9].html
+
+# OS editor noise
+.DS_Store
+Thumbs.db
