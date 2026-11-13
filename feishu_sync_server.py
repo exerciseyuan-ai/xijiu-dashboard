@@ -12,6 +12,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -23,6 +24,7 @@ HOST = os.environ.get("HOST", "0.0.0.0" if os.environ.get("PORT") else "127.0.0.
 PORT = int(os.environ.get("PORT") or os.environ.get("FEISHU_DASHBOARD_PORT") or "8766")
 FEISHU_BASE = "https://open.feishu.cn/open-apis"
 CHUNK_ROWS = 600
+CHUNK_CONCURRENCY = max(1, int(os.environ.get("FEISHU_CHUNK_CONCURRENCY", "4")))
 REQUEST_TIMEOUT = 120
 REQUEST_RETRIES = 3
 CACHE_DIR = Path(os.environ.get("FEISHU_SYNC_CACHE_DIR", str(ROOT)))
@@ -233,9 +235,9 @@ def read_sheet_values(
     end_column = column_letter(total_columns)
     all_rows: list[list[Any]] = []
     revision = None
-    start_row = 1
-    while start_row <= total_rows:
-        end_row = min(total_rows, start_row + CHUNK_ROWS - 1)
+
+    def fetch_chunk(bounds: tuple[int, int]) -> dict[str, Any]:
+        start_row, end_row = bounds
         sheet_range = f"{sheet_id}!A{start_row}:{end_column}{end_row}"
         query = urllib.parse.urlencode(
             {
@@ -247,18 +249,52 @@ def read_sheet_values(
             f"{FEISHU_BASE}/sheets/v2/spreadsheets/{urllib.parse.quote(sheet_token)}/values_batch_get?{query}",
             headers=api_headers(token),
         )
+        return response
+
+    chunk_bounds = [
+        (start_row, min(total_rows, start_row + CHUNK_ROWS - 1))
+        for start_row in range(1, total_rows + 1, CHUNK_ROWS)
+    ]
+    max_workers = min(CHUNK_CONCURRENCY, len(chunk_bounds))
+    if max_workers <= 1:
+        chunk_responses = [fetch_chunk(bounds) for bounds in chunk_bounds]
+    else:
+        with ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="feishu-sheet") as executor:
+            chunk_responses = list(executor.map(fetch_chunk, chunk_bounds))
+
+    for response in chunk_responses:
         data = response.get("data", {})
         revision = data.get("revision", revision)
         ranges = data.get("valueRanges", [])
         values = ranges[0].get("values", []) if ranges else []
         all_rows.extend(values)
-        start_row = end_row + 1
     if not all_rows:
         return [], [], revision
     headers = [str(value or "").strip() for value in all_rows[0]]
     rows = normalize_rows(headers, all_rows[1:])
     headers, rows = trim_table(headers, rows)
     return headers, rows, revision
+
+
+def get_workbook_revision(
+    token: str,
+    sheet_token: str,
+    sheet: dict[str, Any],
+) -> int | None:
+    sheet_id = sheet.get("sheet_id")
+    if not sheet_id:
+        return None
+    query = urllib.parse.urlencode(
+        {
+            "ranges": f"{sheet_id}!A1:A1",
+            "valueRenderOption": "ToString",
+        }
+    )
+    response = http_json(
+        f"{FEISHU_BASE}/sheets/v2/spreadsheets/{urllib.parse.quote(sheet_token)}/values_batch_get?{query}",
+        headers=api_headers(token),
+    )
+    return response.get("data", {}).get("revision")
 
 
 def resolve_mapping(sheets: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -320,17 +356,41 @@ def load_sync_cache(app_id: str, sheet_token: str) -> dict[str, Any] | None:
         return None
 
 
-def sync_feishu_workbook(app_id: str, app_secret: str, sheet_token_input: str) -> dict[str, Any]:
+def sync_feishu_workbook(
+    app_id: str,
+    app_secret: str,
+    sheet_token_input: str,
+    known_revision: int | None = None,
+) -> dict[str, Any]:
+    sync_started = time.perf_counter()
     sheet_token = parse_sheet_token(sheet_token_input)
     access_token = get_tenant_token(app_id, app_secret)
     spreadsheet = get_spreadsheet(access_token, sheet_token)
     sheets = get_sheets(access_token, sheet_token)
     mapping = resolve_mapping(sheets)
+    latest_revision = get_workbook_revision(access_token, sheet_token, next(iter(mapping.values())))
+    if known_revision is not None and latest_revision == known_revision:
+        cached = load_sync_cache(app_id, sheet_token)
+        if cached:
+            cached_result = dict(cached)
+            cached_result["code"] = 0
+            cached_result["stale"] = False
+            cached_result["unchanged"] = True
+            cached_result["checkedAt"] = datetime.now().astimezone().isoformat(timespec="seconds")
+            cached_result["syncStats"] = {
+                "durationMs": round((time.perf_counter() - sync_started) * 1000),
+                "cacheHit": True,
+                "chunkConcurrency": CHUNK_CONCURRENCY,
+            }
+            return cached_result
     output_sheets: dict[str, Any] = {}
+    sheet_durations: dict[str, float] = {}
     revision = None
     for key, sheet in mapping.items():
+        sheet_started = time.perf_counter()
         headers, rows, sheet_revision = read_sheet_values(access_token, sheet_token, sheet)
         revision = sheet_revision if sheet_revision is not None else revision
+        sheet_durations[key] = round(time.perf_counter() - sheet_started, 3)
         output_sheets[key] = {
             "sheetId": sheet.get("sheet_id"),
             "title": sheet.get("title"),
@@ -339,6 +399,11 @@ def sync_feishu_workbook(app_id: str, app_secret: str, sheet_token_input: str) -
             "rowCount": len(rows),
             "columnCount": len(headers),
         }
+        print(
+            f"[feishu-sync] {sheet.get('title')}: {len(rows)} rows in {sheet_durations[key]:.1f}s",
+            flush=True,
+        )
+    duration_ms = round((time.perf_counter() - sync_started) * 1000)
     result = {
         "code": 0,
         "spreadsheet": {
@@ -350,6 +415,12 @@ def sync_feishu_workbook(app_id: str, app_secret: str, sheet_token_input: str) -
         "sheets": output_sheets,
         "fetchedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
         "stale": False,
+        "unchanged": False,
+        "syncStats": {
+            "durationMs": duration_ms,
+            "sheetDurations": sheet_durations,
+            "chunkConcurrency": CHUNK_CONCURRENCY,
+        },
     }
     save_sync_cache(result, app_id, sheet_token)
     return result
@@ -389,9 +460,11 @@ class FeishuDashboardHandler(SimpleHTTPRequestHandler):
             app_id = str(payload.get("appId") or "").strip()
             app_secret = str(payload.get("appSecret") or "").strip()
             sheet_token = str(payload.get("sheetToken") or "").strip()
+            known_revision_value = payload.get("revision")
+            known_revision = int(known_revision_value) if str(known_revision_value or "").isdigit() else None
             if not app_id or not app_secret or not sheet_token:
                 raise ValueError("App ID、App Secret、Sheet Token 均不能为空")
-            result = sync_feishu_workbook(app_id, app_secret, sheet_token)
+            result = sync_feishu_workbook(app_id, app_secret, sheet_token, known_revision)
             self.send_json(200, result)
         except FeishuApiError as error:
             cached = load_sync_cache(app_id, parse_sheet_token(sheet_token))

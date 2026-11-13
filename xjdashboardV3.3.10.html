@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>订单自助分析看板</title>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js">
+    <script src="/vendor/xlsx.full.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="/vendor/chart.umd.min.js"></script>
+    <script src="/vendor/echarts.min.js"></script>
+    <link rel="stylesheet" href="/vendor/all.min.css">
     <style>
         * {
             margin: 0;
@@ -9211,7 +9211,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                         method: 'POST',
                         credentials: 'same-origin',
                         headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                        body: JSON.stringify({ appId, appSecret, sheetToken }),
+                        body: JSON.stringify({
+                            appId,
+                            appSecret,
+                            sheetToken,
+                            revision: feishuLastSync?.spreadsheet?.revision ?? null
+                        }),
                         signal: controller.signal
                     });
                     const text = await response.text();
@@ -9224,13 +9229,32 @@ https://github.com/nodeca/pako/blob/main/LICENSE
                     if (!response.ok || payload.code !== 0) {
                         throw new Error(payload.message || `同步服务返回 HTTP ${response.status}`);
                     }
+                    const syncSeconds = payload.syncStats?.durationMs
+                        ? (payload.syncStats.durationMs / 1000).toFixed(1)
+                        : null;
+                    if (payload.unchanged) {
+                        feishuLastSync = payload;
+                        const checkedTime = new Date(payload.checkedAt || Date.now()).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                        document.getElementById('feishuSyncBtnLabel').textContent = `飞书同步 ${checkedTime}`;
+                        setFeishuSyncStatus(
+                            'success',
+                            `<i class="fas fa-circle-check"></i> 飞书表格版本未变化，已跳过完整下载和重新渲染${syncSeconds ? `，校验耗时 ${syncSeconds} 秒` : ''}。`
+                        );
+                        document.getElementById('feishuAppSecret').value = '';
+                        setTimeout(function() {
+                            feishuSyncOverlayEl.classList.remove('show');
+                            feishuSyncOverlayEl.setAttribute('aria-hidden', 'true');
+                            document.body.style.overflow = '';
+                        }, 900);
+                        return;
+                    }
                     const stats = importFeishuSyncPayload(payload);
                     const syncTime = new Date(payload.fetchedAt || Date.now()).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
                     document.getElementById('feishuSyncBtnLabel').textContent = payload.stale ? `飞书缓存 ${syncTime}` : `飞书同步 ${syncTime}`;
                     const warningHtml = stats.warnings.length ? `<br><span style="color:#c2410c;">${stats.warnings.map(escapeHtml).join('<br>')}</span>` : '';
                     setFeishuSyncStatus(
                         payload.stale ? 'warning' : 'success',
-                        `<i class="fas ${payload.stale ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i> ${payload.stale ? '已加载缓存数据' : '同步完成'}：即时零售 ${stats.instantOrders} 单、商品 ${stats.instantProducts} 条、抖音订单 ${stats.douyinOrders.toLocaleString()} 单、核销 ${stats.douyinVerification.toLocaleString()} 条、售后 ${stats.douyinAfterSales.toLocaleString()} 条。${warningHtml}`
+                        `<i class="fas ${payload.stale ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i> ${payload.stale ? '已加载缓存数据' : '同步完成'}${syncSeconds ? `（${syncSeconds} 秒）` : ''}：即时零售 ${stats.instantOrders} 单、商品 ${stats.instantProducts} 条、抖音订单 ${stats.douyinOrders.toLocaleString()} 单、核销 ${stats.douyinVerification.toLocaleString()} 条、售后 ${stats.douyinAfterSales.toLocaleString()} 条。${warningHtml}`
                     );
                     document.getElementById('feishuAppSecret').value = '';
                     if (!stats.warnings.length) {
